@@ -23,7 +23,7 @@ public class MainPage extends JFrame {
 
         // Logo Label with icon and text
         JLabel logoLabel = new JLabel("", JLabel.CENTER);
-        ImageIcon icon = new ImageIcon("LandingPage/images/logo.png"); 
+        ImageIcon icon = new ImageIcon("./assets/logo.png"); 
         Image resizedImage = icon.getImage().getScaledInstance(600,250, java.awt.Image.SCALE_SMOOTH);
         ImageIcon logoIcon = new ImageIcon(resizedImage);
         logoLabel.setIcon(logoIcon);
@@ -37,7 +37,7 @@ public class MainPage extends JFrame {
 
         // New Plan Button
         JButton newPlanButton = new JButton("New Plan");
-        ImageIcon icon2 = new ImageIcon("LandingPage/images/newfile.png"); 
+        ImageIcon icon2 = new ImageIcon("./assets/newfile.png"); 
         Image resizedImage2 = icon2.getImage().getScaledInstance(30,30, java.awt.Image.SCALE_SMOOTH);
         ImageIcon newPlanIcon = new ImageIcon(resizedImage2);
         newPlanButton.setIcon(newPlanIcon);
@@ -47,7 +47,7 @@ public class MainPage extends JFrame {
 
         // Load Plan Button
         JButton loadPlanButton = new JButton("Load Plan");
-        ImageIcon icon3 = new ImageIcon("LandingPage/images/folder.png"); 
+        ImageIcon icon3 = new ImageIcon("./assets/folder.png"); 
         Image resizedImage3 = icon3.getImage().getScaledInstance(30,30, java.awt.Image.SCALE_SMOOTH);
         ImageIcon loadPlanIcon = new ImageIcon(resizedImage3);
         loadPlanButton.setIcon(loadPlanIcon);
