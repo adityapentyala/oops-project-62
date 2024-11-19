@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
+import src.PlanPage.LeftPaneDesign;
 
 public class PlanPage {
     static int LENGTH = 1200;
@@ -20,7 +21,7 @@ public class PlanPage {
         frame.setSize(LENGTH, WIDTH);
 
         // Design Pane
-        JPanel designPane = new JPanel();
+        JPanel designPane = new LeftPaneDesign();
         designPane.setBackground(Color.LIGHT_GRAY);
         designPane.setPreferredSize(new Dimension((int)(0.75*LENGTH), WIDTH));
 
@@ -51,7 +52,7 @@ class SnapGridPane extends JPanel {
         this.setBackground(Color.WHITE);
         for (int i=0; i<rows; i++){
             for (int j=0; j<rows; j++){
-                gridMatrix[i][j] = 0;
+                // this.gridMatrix[i][j] = 0;
             }
         }
         this.addMouseListener(new MouseAdapter() {
