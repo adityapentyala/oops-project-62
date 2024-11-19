@@ -7,6 +7,9 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 
 public class PlanPage {
+    static int LENGTH = 1600;
+    static int WIDTH = 1000;
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(PlanPage::createAndShowGUI);
     }
@@ -14,12 +17,12 @@ public class PlanPage {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Snap Grid Designer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1600, 1000);
+        frame.setSize(LENGTH, WIDTH);
 
         // Design Pane
         JPanel designPane = new JPanel();
         designPane.setBackground(Color.LIGHT_GRAY);
-        designPane.setPreferredSize(new Dimension(600, 1000));
+        designPane.setPreferredSize(new Dimension(600, WIDTH));
 
         // Snap Grid Pane
         SnapGridPane snapGridPane = new SnapGridPane();
@@ -50,9 +53,11 @@ class SnapGridPane extends JPanel {
                 if (startPoint == null) {
                     startPoint = snapPoint;
                 } else {
-                    lines.add(new Line(startPoint, snapPoint));
-                    startPoint = null;
-                    placed = true;
+                    if (findValidEndpoints(startPoint, 1).contains(snapPoint)){
+                        lines.add(new Line(startPoint, snapPoint));
+                        startPoint = null;
+                        placed = true;
+                    }
                 }
                 repaint();
                 placed = false;
@@ -75,6 +80,7 @@ class SnapGridPane extends JPanel {
         drawGrid(g);
         drawLines(g);
         drawStartPointMarker(g);
+        drawValidEndpoints(g, startPoint);
         drawEndPointMarker(g);
         drawCurrentPosition(g);
     }
@@ -124,6 +130,34 @@ class SnapGridPane extends JPanel {
             g.setColor(Color.GREEN);
             int markerSize = 8;
             g.fillOval(currentPos.x - markerSize / 2, currentPos.y - markerSize / 2, markerSize, markerSize);
+        }
+    }
+
+    private ArrayList<Point> findValidEndpoints(Point startPoint, int type) {
+        ArrayList<Point> validPoints = new ArrayList<>();
+        for (int j=0; j<33; j++){
+            if (startPoint.y != j*30){
+                Point p = new Point(startPoint.x, j*30);
+                validPoints.add(p);
+            }
+        }
+        for (int i=0; i<53; i++){
+            if (startPoint.x != i*30) {
+                Point p = new Point(i*30, startPoint.y);
+                validPoints.add(p);
+            }
+        }
+        return validPoints;
+    }
+
+    private void drawValidEndpoints(Graphics g, Point startPoint) {
+        if (startPoint!=null){
+            g.setColor(Color.BLUE);
+            int markerSize = 8;
+            ArrayList<Point> validPoints = findValidEndpoints(startPoint, 1);
+            for (int i=0; i<validPoints.size(); i++){
+                g.fillOval(validPoints.get(i).x - markerSize / 2, validPoints.get(i).y - markerSize / 2, markerSize, markerSize);
+            }
         }
     }
 
