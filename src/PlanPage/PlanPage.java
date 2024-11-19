@@ -7,8 +7,8 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 
 public class PlanPage {
-    static int LENGTH = 1600;
-    static int WIDTH = 1000;
+    static int LENGTH = 1200;
+    static int WIDTH = 750;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(PlanPage::createAndShowGUI);
@@ -22,14 +22,14 @@ public class PlanPage {
         // Design Pane
         JPanel designPane = new JPanel();
         designPane.setBackground(Color.LIGHT_GRAY);
-        designPane.setPreferredSize(new Dimension(600, WIDTH));
+        designPane.setPreferredSize(new Dimension((int)(0.75*LENGTH), WIDTH));
 
         // Snap Grid Pane
         SnapGridPane snapGridPane = new SnapGridPane();
 
         // Split Pane
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, designPane, snapGridPane);
-        splitPane.setDividerLocation(600);
+        splitPane.setDividerLocation(LENGTH/3);
         splitPane.setResizeWeight(0.25);
 
         frame.add(splitPane);
@@ -43,9 +43,17 @@ class SnapGridPane extends JPanel {
     private Point startPoint = null;
     public Point currentPos = null;
     public boolean placed = false;
+    public int rows = 40;
+    public int cols = 25;
+    public int gridMatrix[][];
 
     public SnapGridPane() {
         this.setBackground(Color.WHITE);
+        for (int i=0; i<rows; i++){
+            for (int j=0; j<rows; j++){
+                gridMatrix[i][j] = 0;
+            }
+        }
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -67,7 +75,7 @@ class SnapGridPane extends JPanel {
             @Override
             public void mouseMoved(MouseEvent e) {
                 currentPos = snapToGrid(e.getPoint());
-                repaint(); // Ensure the hover marker is updated
+                repaint();
             }
         });
 
@@ -78,7 +86,7 @@ class SnapGridPane extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawGrid(g);
-        drawLines(g);
+        drawLines(g, 1);
         drawStartPointMarker(g);
         drawValidEndpoints(g, startPoint);
         drawEndPointMarker(g);
@@ -98,11 +106,16 @@ class SnapGridPane extends JPanel {
         }
     }
 
-    private void drawLines(Graphics g) {
+    private void drawLines(Graphics g, int type) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.BLACK);
-        g2d.setStroke(new BasicStroke(3)); // Set line thickness to 3 pixels
-
+        if (type == 1){
+            g2d.setColor(Color.BLACK);
+        } else if (type == 2){
+            g2d.setColor(Color.CYAN);
+        } else if (type == 3) {
+            g2d.setColor(Color.ORANGE);
+        }
+        g2d.setStroke(new BasicStroke(3));
         for (Line line : lines) {
             g2d.drawLine(line.start.x, line.start.y, line.end.x, line.end.y);
         }
@@ -120,7 +133,7 @@ class SnapGridPane extends JPanel {
     private void drawStartPointMarker(Graphics g) {
         if (startPoint != null) {
             g.setColor(Color.RED);
-            int markerSize = 8; // Size of the marker
+            int markerSize = 8; 
             g.fillOval(startPoint.x - markerSize / 2, startPoint.y - markerSize / 2, markerSize, markerSize);
         }
     }
