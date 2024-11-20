@@ -9,7 +9,7 @@ public class LeftPaneDesign extends JPanel {
     private JPanel mainPanel, viewPanel, actionPanel, controlPanel, bottomPanel;
     private JButton boundaryViewBtn, roomViewBtn;
     private JButton wallBtn, windowBtn, doorBtn;
-    private JButton livingRoomBtn, kitchenBtn, bathroomBtn, bedroomBtn, balconyBtn;
+    private JButton livingRoomBtn, kitchenBtn, bathroomBtn, bedroomBtn, diningRoomBtn;
     private JButton deleteBtn, cancelBtn, saveBtn;
 
     public LeftPaneDesign() {
@@ -94,6 +94,31 @@ public class LeftPaneDesign extends JPanel {
         actionPanel.add(windowBtn);
         actionPanel.add(doorBtn);
 
+        // add listeners
+        wallBtn.addActionListener(e -> {
+            wallBtn.setEnabled(false);
+            windowBtn.setEnabled(true);
+            doorBtn.setEnabled(true);
+            showBoundaryButtons();
+            selectionState.selection.put("boundary", 1);
+        });
+
+        windowBtn.addActionListener(e -> {
+            wallBtn.setEnabled(true);
+            windowBtn.setEnabled(false);
+            doorBtn.setEnabled(true);
+            showBoundaryButtons();
+            selectionState.selection.put("boundary", 3);
+        });
+
+        doorBtn.addActionListener(e -> {
+            wallBtn.setEnabled(true);
+            windowBtn.setEnabled(true);
+            doorBtn.setEnabled(false);
+            showBoundaryButtons();
+            selectionState.selection.put("boundary", 2);
+        });
+
         // Redraw panel
         actionPanel.revalidate();
         actionPanel.repaint();
@@ -105,13 +130,64 @@ public class LeftPaneDesign extends JPanel {
         kitchenBtn = new JButton("Kitchen");
         bathroomBtn = new JButton("Bathroom");
         bedroomBtn = new JButton("Bedroom");
-        balconyBtn = new JButton("Balcony");
+        diningRoomBtn = new JButton("Dining Room");
 
         actionPanel.add(livingRoomBtn);
         actionPanel.add(kitchenBtn);
         actionPanel.add(bathroomBtn);
         actionPanel.add(bedroomBtn);
-        actionPanel.add(balconyBtn);
+        actionPanel.add(diningRoomBtn);
+
+        // add action listeners
+        livingRoomBtn.addActionListener(e -> {
+            livingRoomBtn.setEnabled(false);
+            kitchenBtn.setEnabled(true);
+            bathroomBtn.setEnabled(true);
+            bedroomBtn.setEnabled(true);
+            diningRoomBtn.setEnabled(true);
+            showRoomButtons();
+            selectionState.selection.put("room", 8);
+        });
+
+        kitchenBtn.addActionListener(e -> {
+            livingRoomBtn.setEnabled(false);
+            kitchenBtn.setEnabled(true);
+            bathroomBtn.setEnabled(true);
+            bedroomBtn.setEnabled(true);
+            diningRoomBtn.setEnabled(true);
+            showRoomButtons();
+            selectionState.selection.put("room", 4);
+        });
+
+        bathroomBtn.addActionListener(e -> {
+            livingRoomBtn.setEnabled(true);
+            kitchenBtn.setEnabled(true);
+            bathroomBtn.setEnabled(false);
+            bedroomBtn.setEnabled(true);
+            diningRoomBtn.setEnabled(true);
+            showRoomButtons();
+            selectionState.selection.put("room", 6);
+        });
+
+        bedroomBtn.addActionListener(e -> {
+            livingRoomBtn.setEnabled(true);
+            kitchenBtn.setEnabled(true);
+            bathroomBtn.setEnabled(true);
+            bedroomBtn.setEnabled(false);
+            diningRoomBtn.setEnabled(true);
+            showRoomButtons();
+            selectionState.selection.put("room", 5);
+        });
+
+        diningRoomBtn.addActionListener(e -> {
+            livingRoomBtn.setEnabled(true);
+            kitchenBtn.setEnabled(true);
+            bathroomBtn.setEnabled(true);
+            bedroomBtn.setEnabled(true);
+            diningRoomBtn.setEnabled(false);
+            showRoomButtons();
+            selectionState.selection.put("room", 7);
+        });
 
         // Redraw panel
         actionPanel.revalidate();

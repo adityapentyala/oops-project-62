@@ -91,11 +91,11 @@ class SnapGridPane extends JPanel {
                         lines.add(new Line(snapPoint, new Point (snapPoint.x, startPoint.y), 1));
                         rooms.add(new Room(startPoint, snapPoint, selectionState.selection.get("room")));
                         System.out.println(" "+selectionState.selection.get("room"));
-                        if (selectionState.selection.get("room")<8){
-                            selectionState.selection.put("room", selectionState.selection.get("room")+1);
-                        } else {
-                            selectionState.selection.put("room", 4);
-                        }
+                        // if (selectionState.selection.get("room")<8){
+                        //     selectionState.selection.put("room", selectionState.selection.get("room")+1);
+                        // } else {
+                        //     selectionState.selection.put("room", 4);
+                        // }
                         startPoint = null;
                         placed = true;
                     }
@@ -150,10 +150,10 @@ class SnapGridPane extends JPanel {
         for (Line line : lines) {
             if (line.id == 1){
                 g2d.setColor(Color.BLACK);
-            } else if (line.id == 2){
+            } else if (line.id == 3){
                 g2d.setColor(Color.CYAN);
-            } else if (line.id == 3) {
-                g2d.setColor(Color.ORANGE);
+            } else if (line.id == 2) {
+                g2d.setColor(Color.WHITE);
             }
             g2d.drawLine(line.start.x, line.start.y, line.end.x, line.end.y);
         }
@@ -241,7 +241,7 @@ class SnapGridPane extends JPanel {
         return new Point(x, y);
     }
 
-    private static class Line {
+    private class Line {
         Point start, end;
         int id;
 
@@ -252,7 +252,7 @@ class SnapGridPane extends JPanel {
         }
     }
 
-    private static class Room{
+    private class Room{
         Point topLeft, bottomRight, topRight, bottomLeft;
         int width, height, id;
         public Room(Point start, Point end, int _id){
