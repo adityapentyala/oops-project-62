@@ -13,6 +13,10 @@ public class LeftPaneDesign extends JPanel {
     private JButton deleteBtn, cancelBtn, saveBtn;
 
     public LeftPaneDesign() {
+        selectionState.selection.put("view", 1);
+        selectionState.selection.put("room", 0);
+        selectionState.selection.put("boundary", 1);
+        selectionState.selection.put("fixture", 0);
         // setTitle("Floor Planner - Left Pane Design");
         // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 600);
@@ -63,12 +67,20 @@ public class LeftPaneDesign extends JPanel {
             boundaryViewBtn.setEnabled(false);
             roomViewBtn.setEnabled(true);
             showBoundaryButtons();
+            selectionState.selection.put("view", 1);
+            selectionState.selection.put("room", 0);
+            selectionState.selection.put("boundary", 2);
+            selectionState.selection.put("fixture", 0);
         });
 
         roomViewBtn.addActionListener(e -> {
             roomViewBtn.setEnabled(false);
             boundaryViewBtn.setEnabled(true);
             showRoomButtons();
+            selectionState.selection.put("view", 2);
+            selectionState.selection.put("room", 4);
+            selectionState.selection.put("boundary", 0);
+            selectionState.selection.put("fixture", 0);
         });
     }
 

@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class PlanPage {
     static int LENGTH = 40;
@@ -33,6 +34,7 @@ public class PlanPage {
         splitPane.setResizeWeight(0.25);
 
         frame.add(splitPane);
+        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the frame
         frame.setVisible(true);
     }
 }
@@ -59,10 +61,10 @@ class SnapGridPane extends JPanel {
         selectionState.colorMap.put(7, Color.ORANGE); // Dining area
         selectionState.colorMap.put(8, Color.YELLOW); // Drawing room
 
-        selectionState.selection.put("view", 2);
+        /*selectionState.selection.put("view", 2);
         selectionState.selection.put("room", 4);
         selectionState.selection.put("boundary", 2);
-        selectionState.selection.put("fixture", 1);
+        selectionState.selection.put("fixture", 1);*/
         this.setBackground(Color.WHITE);
         for (int i=0; i<rows; i++){
             for (int j=0; j<rows; j++){
@@ -77,16 +79,16 @@ class SnapGridPane extends JPanel {
                     startPoint = snapPoint;
                 } else {
                     if (selectionState.selection.get("view") == 1 && findValidEndpoints(startPoint, 1).contains(snapPoint)){
-                        lines.add(new Line(startPoint, snapPoint));
+                        lines.add(new Line(startPoint, snapPoint, selectionState.selection.get("boundary")));
                         startPoint = null;
                         placed = true;
                     } else if (selectionState.selection.get("view") == 2 && selectionState.selection.get("room") !=0) {
                         //System.out.println(" "+startPoint+snapPoint);
                         matrixUtilities.addRoom(gridMatrix, startPoint, snapPoint, 4);
-                        lines.add(new Line(startPoint, new Point (snapPoint.x, startPoint.y)));
-                        lines.add(new Line(startPoint, new Point (startPoint.x, snapPoint.y)));
-                        lines.add(new Line(snapPoint, new Point (startPoint.x, snapPoint.y)));
-                        lines.add(new Line(snapPoint, new Point (snapPoint.x, startPoint.y)));
+                        lines.add(new Line(startPoint, new Point (snapPoint.x, startPoint.y), 1));
+                        lines.add(new Line(startPoint, new Point (startPoint.x, snapPoint.y), 1));
+                        lines.add(new Line(snapPoint, new Point (startPoint.x, snapPoint.y), 1));
+                        lines.add(new Line(snapPoint, new Point (snapPoint.x, startPoint.y), 1));
                         rooms.add(new Room(startPoint, snapPoint, selectionState.selection.get("room")));
                         System.out.println(" "+selectionState.selection.get("room"));
                         if (selectionState.selection.get("room")<8){
@@ -118,7 +120,7 @@ class SnapGridPane extends JPanel {
         super.paintComponent(g);
         drawRooms(g);
         drawGrid(g);
-        drawLines(g, 1);
+        drawLines(g);
         drawStartPointMarker(g);
         drawValidEndpoints(g, startPoint, selectionState.selection.get("view"));
         drawEndPointMarker(g);
@@ -126,6 +128,7 @@ class SnapGridPane extends JPanel {
     }
 
     private void drawGrid(Graphics g) {
+        Color original = g.getColor();
         g.setColor(Color.LIGHT_GRAY);
 
         int width = getWidth();
@@ -137,47 +140,56 @@ class SnapGridPane extends JPanel {
         for (int y = 0; y < height; y += GRID_SIZE) {
             g.drawLine(0, y, width, y);
         }
+        g.setColor(original);
     }
 
-    private void drawLines(Graphics g, int type) {
+    private void drawLines(Graphics g) {
+        Color original = g.getColor();
         Graphics2D g2d =(Graphics2D) g;
-        if (type == 1){
-            g2d.setColor(Color.BLACK);
-        } else if (type == 2){
-            g2d.setColor(Color.CYAN);
-        } else if (type == 3) {
-            g2d.setColor(Color.ORANGE);
-        }
         g2d.setStroke(new BasicStroke(3));
         for (Line line : lines) {
+            if (line.id == 1){
+                g2d.setColor(Color.BLACK);
+            } else if (line.id == 2){
+                g2d.setColor(Color.CYAN);
+            } else if (line.id == 3) {
+                g2d.setColor(Color.ORANGE);
+            }
             g2d.drawLine(line.start.x, line.start.y, line.end.x, line.end.y);
         }
         g2d.setStroke(new BasicStroke(1));
+        g2d.setColor(original);
     }
 
     private void drawCurrentPosition(Graphics g){
-        if (startPoint==null && placed==false){
+        Color original = g.getColor();
+        if (currentPos!=null && startPoint==null && placed==false){
             g.setColor(Color.PINK);
             int markerSize = 8;
             //System.out.print("position is"+currentPos+" ");
             g.fillOval(currentPos.x - markerSize / 2, currentPos.y - markerSize / 2, markerSize, markerSize);
         }
+        g.setColor(original);
     }
 
     private void drawStartPointMarker(Graphics g) {
+        Color original = g.getColor();
         if (startPoint != null) {
             g.setColor(Color.RED);
             int markerSize = 8; 
             g.fillOval(startPoint.x - markerSize / 2, startPoint.y - markerSize / 2, markerSize, markerSize);
         }
+        g.setColor(original);
     }
 
     private void drawEndPointMarker(Graphics g) {
+        Color original = g.getColor();
         if (startPoint!=null && placed==false){
             g.setColor(Color.GREEN);
             int markerSize = 8;
             g.fillOval(currentPos.x - markerSize / 2, currentPos.y - markerSize / 2, markerSize, markerSize);
         }
+        g.setColor(original);
     }
 
     private ArrayList<Point> findValidEndpoints(Point startPoint, int type) {
@@ -198,6 +210,7 @@ class SnapGridPane extends JPanel {
     }
 
     private void drawValidEndpoints(Graphics g, Point startPoint, int view) {
+        Color original = g.getColor();
         if (view != 1){
             return;
         }
@@ -209,14 +222,17 @@ class SnapGridPane extends JPanel {
                 g.fillOval(validPoints.get(i).x - markerSize / 2, validPoints.get(i).y - markerSize / 2, markerSize, markerSize);
             }
         }
+        g.setColor(original);
     }
 
     private void drawRooms(Graphics g){
+        Color original = g.getColor();
         for (Room room: rooms) {
             g.setColor(selectionState.colorMap.get(room.id));
             g.fillRect(room.topLeft.x, room.topLeft.y, room.width+1, room.height+1);
             // System.out.println(" "+room);
         }
+        g.setColor(original);
     }
 
     private Point snapToGrid(Point point) {
@@ -227,10 +243,12 @@ class SnapGridPane extends JPanel {
 
     private static class Line {
         Point start, end;
+        int id;
 
-        public Line(Point start, Point end) {
+        public Line(Point start, Point end, int _id) {
             this.start = start;
             this.end = end;
+            this.id = _id;
         }
     }
 
