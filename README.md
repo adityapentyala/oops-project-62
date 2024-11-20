@@ -9,7 +9,8 @@
 - [ ] matrix-grid conversion
 - [ ] reflecting changes to matrix & grid in each other
 - [ ] boundary deletion dynamic
-- [ ] addition of rooms
+- [x] addition of rooms
+- [ ] editing of rooms
 - [ ] deletion of rooms
 - [ ] addition of furniture
 - [ ] deletion of furniture
