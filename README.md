@@ -17,7 +17,7 @@
 
 ### Design Pane
 - [ ] delete/cancel/save buttons at the bottom
-- [ ] switch between boundary view and rooms view
+- [x] switch between boundary view and rooms view
 - [ ] boundary view - select & return 1: wall, 2: window, 3: door
 - [ ] rooms view - select & return 4: LR, 5: Kitchen, 6: Bathroom, 7:, 8:, etc.
 - [ ] individual room view - select & return furniture for the room (mapping to be done later)
