@@ -49,6 +49,8 @@ class SnapGridPane extends JPanel {
     public int cols = 25;
     public int gridMatrix[][] = new int[40*30][25*30];
     public ArrayList<Room> rooms = new ArrayList<>();
+    public Point dragPoint = null;
+    boolean dragging = false;
     
 
     public SnapGridPane() {
@@ -74,6 +76,7 @@ class SnapGridPane extends JPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                dragging = true;
                 Point snapPoint = snapToGrid(e.getPoint());
                 if (startPoint == null) {
                     startPoint = snapPoint;
@@ -82,6 +85,8 @@ class SnapGridPane extends JPanel {
                         lines.add(new Line(startPoint, snapPoint, selectionState.selection.get("boundary")));
                         startPoint = null;
                         placed = true;
+                        repaint();
+                        placed = false;
                     } else if (selectionState.selection.get("view") == 2 && selectionState.selection.get("room") !=0) {
                         //System.out.println(" "+startPoint+snapPoint);
                         matrixUtilities.addRoom(gridMatrix, startPoint, snapPoint, 4);
@@ -91,24 +96,56 @@ class SnapGridPane extends JPanel {
                         lines.add(new Line(snapPoint, new Point (snapPoint.x, startPoint.y), 1));
                         rooms.add(new Room(startPoint, snapPoint, selectionState.selection.get("room")));
                         System.out.println(" "+selectionState.selection.get("room"));
-                        // if (selectionState.selection.get("room")<8){
-                        //     selectionState.selection.put("room", selectionState.selection.get("room")+1);
-                        // } else {
-                        //     selectionState.selection.put("room", 4);
-                        // }
                         startPoint = null;
                         placed = true;
+                        repaint();
+                        placed = false;
                     }
                 }
+            }
+            
+            @Override
+            public void mouseReleased(MouseEvent e){
+                dragging = false;
+                //System.out.println(startPoint+" "+dragPoint);
+                if (startPoint!=null && dragPoint!=null && selectionState.selection.get("view") == 1 && findValidEndpoints(startPoint, 1).contains(dragPoint)){
+                    lines.add(new Line(startPoint, dragPoint, selectionState.selection.get("boundary")));
+                    startPoint = null;
+                    placed = true;
+                } else if (startPoint!=null && dragPoint!=null&& selectionState.selection.get("view") == 2 && selectionState.selection.get("room") !=0) {
+                    //System.out.println(" "+startPoint+snapPoint);
+                    matrixUtilities.addRoom(gridMatrix, startPoint, dragPoint, 4);
+                    lines.add(new Line(startPoint, new Point (dragPoint.x, startPoint.y), 1));
+                    lines.add(new Line(startPoint, new Point (startPoint.x, dragPoint.y), 1));
+                    lines.add(new Line(dragPoint, new Point (startPoint.x, dragPoint.y), 1));
+                    lines.add(new Line(dragPoint, new Point (dragPoint.x, startPoint.y), 1));
+                    rooms.add(new Room(startPoint, dragPoint, selectionState.selection.get("room")));
+                    startPoint = null;
+                    placed = true;
+                    //System.out.println(" "+selectionState.selection.get("room"));
+                }
                 repaint();
+                dragPoint=null;
                 placed = false;
             }
-        });
+
+    });
         this.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
+                //System.out.println("moved");
                 currentPos = snapToGrid(e.getPoint());
                 repaint();
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e){
+                if (dragging==true){
+                    dragPoint=snapToGrid(e.getPoint());
+                    currentPos = snapToGrid(e.getPoint());
+                    // System.out.println(currentPos+" "+dragPoint);
+                    repaint();
+                }
             }
         });
 
@@ -125,6 +162,7 @@ class SnapGridPane extends JPanel {
         drawValidEndpoints(g, startPoint, selectionState.selection.get("view"));
         drawEndPointMarker(g);
         drawCurrentPosition(g);
+        drawDragPointMarker(g);
     }
 
     private void drawGrid(Graphics g) {
@@ -163,8 +201,21 @@ class SnapGridPane extends JPanel {
 
     private void drawCurrentPosition(Graphics g){
         Color original = g.getColor();
-        if (currentPos!=null && startPoint==null && placed==false){
+        System.out.println("currentpos is "+currentPos);
+        if (currentPos!=null && placed==false){
             g.setColor(Color.PINK);
+            int markerSize = 8;
+            //System.out.print("position is"+currentPos+" ");
+            g.fillOval(currentPos.x - markerSize / 2, currentPos.y - markerSize / 2, markerSize, markerSize);
+        }
+        g.setColor(original);
+    }
+
+    private void drawDragPointMarker(Graphics g){
+        Color original = g.getColor();
+        System.out.println("Dragpoint is "+dragPoint);
+        if (dragPoint!=null && placed == false){
+            g.setColor(Color.GREEN);
             int markerSize = 8;
             //System.out.print("position is"+currentPos+" ");
             g.fillOval(currentPos.x - markerSize / 2, currentPos.y - markerSize / 2, markerSize, markerSize);
