@@ -82,8 +82,8 @@ class SnapGridPane extends JPanel {
                 if (selectionState.selection.get("view") == 0){
                     boolean selected = false;
                     for (Room room: rooms){
-                        if (snapPoint.x>room.topLeft.x && snapPoint.x<room.bottomRight.x 
-                        && snapPoint.y>room.topLeft.y && snapPoint.y<room.bottomRight.y){
+                        if (e.getPoint().x>room.topLeft.x && e.getPoint().x<room.bottomRight.x 
+                        && e.getPoint().y>room.topLeft.y && e.getPoint().y<room.bottomRight.y){
                             selectedRoom = room;
                             selectionState.selectedRoom = selectedRoom;
                             selected = true;
@@ -131,7 +131,7 @@ class SnapGridPane extends JPanel {
                             newWalls.add(l4);
 
                             rooms.add(new Room(startPoint, snapPoint, selectionState.selection.get("room"), newWalls));
-                            System.out.println(" "+selectionState.selection.get("room"));
+                            //System.out.println(" "+selectionState.selection.get("room"));
                             startPoint = null;
                             placed = true;
                             repaint();
@@ -344,7 +344,7 @@ class SnapGridPane extends JPanel {
     }
 
     private void drawSelectedRoom(Graphics g){
-        if (selectedRoom==null){
+        if (selectedRoom==null || selectionState.selection.get("view")!=0){
             return;
         }
         Color original = g.getColor();
