@@ -107,28 +107,36 @@ class SnapGridPane extends JPanel {
                         placed = false;
                     } else if (selectionState.selection.get("view") == 2 && selectionState.selection.get("room") !=0) {
                         //System.out.println(" "+startPoint+snapPoint);
-                        matrixUtilities.addRoom(gridMatrix, startPoint, snapPoint, 4);
-                        Line l1, l2, l3, l4;
-                        l1 = new Line(startPoint, new Point (snapPoint.x, startPoint.y), 1);
-                        l2= new Line(startPoint, new Point (startPoint.x, snapPoint.y), 1);
-                        l3 = new Line(snapPoint, new Point (startPoint.x, snapPoint.y), 1);
-                        l4 = new Line(snapPoint, new Point (snapPoint.x, startPoint.y), 1);
-                        lines.add(l1);
-                        lines.add(l2);
-                        lines.add(l3);
-                        lines.add(l4);
-                        ArrayList<Line> newWalls = new ArrayList<>();
-                        newWalls.add(l1);
-                        newWalls.add(l2);
-                        newWalls.add(l3);
-                        newWalls.add(l4);
+                        if (Utils.overlap_checker(rooms, new Room(startPoint, snapPoint, selectionState.selection.get("room"), new ArrayList<Line>())) == 1){
+                            System.out.println("OVERLAP!!!!");
+                            startPoint = null;
+                            placed = true;
+                            repaint();
+                            placed = false;
+                        } else {
+                            matrixUtilities.addRoom(gridMatrix, startPoint, snapPoint, 4);
+                            Line l1, l2, l3, l4;
+                            l1 = new Line(startPoint, new Point (snapPoint.x, startPoint.y), 1);
+                            l2= new Line(startPoint, new Point (startPoint.x, snapPoint.y), 1);
+                            l3 = new Line(snapPoint, new Point (startPoint.x, snapPoint.y), 1);
+                            l4 = new Line(snapPoint, new Point (snapPoint.x, startPoint.y), 1);
+                            lines.add(l1);
+                            lines.add(l2);
+                            lines.add(l3);
+                            lines.add(l4);
+                            ArrayList<Line> newWalls = new ArrayList<>();
+                            newWalls.add(l1);
+                            newWalls.add(l2);
+                            newWalls.add(l3);
+                            newWalls.add(l4);
 
-                        rooms.add(new Room(startPoint, snapPoint, selectionState.selection.get("room"), newWalls));
-                        System.out.println(" "+selectionState.selection.get("room"));
-                        startPoint = null;
-                        placed = true;
-                        repaint();
-                        placed = false;
+                            rooms.add(new Room(startPoint, snapPoint, selectionState.selection.get("room"), newWalls));
+                            System.out.println(" "+selectionState.selection.get("room"));
+                            startPoint = null;
+                            placed = true;
+                            repaint();
+                            placed = false;
+                        }
                     }
                 }
             }
@@ -143,7 +151,14 @@ class SnapGridPane extends JPanel {
                     placed = true;
                 } else if (startPoint!=null && dragPoint!=null&& selectionState.selection.get("view") == 2 && selectionState.selection.get("room") !=0) {
                     //System.out.println(" "+startPoint+snapPoint);
-                    matrixUtilities.addRoom(gridMatrix, startPoint, dragPoint, 4);
+                    if (Utils.overlap_checker(rooms, new Room(startPoint, dragPoint, selectionState.selection.get("room"), new ArrayList<Line>())) == 1){
+                        System.out.println("OVERLAP!!!!");
+                        startPoint = null;
+                        placed = true;
+                        repaint();
+                        placed = false;
+                    } else {
+                        matrixUtilities.addRoom(gridMatrix, startPoint, dragPoint, 4);
                     Line l1, l2, l3, l4;
                     l1=new Line(startPoint, new Point (dragPoint.x, startPoint.y), 1);
                     l2=new Line(startPoint, new Point (startPoint.x, dragPoint.y), 1);
@@ -163,6 +178,7 @@ class SnapGridPane extends JPanel {
                     startPoint = null;
                     placed = true;
                     //System.out.println(" "+selectionState.selection.get("room"));
+                    }
                 }
                 repaint();
                 dragPoint=null;
@@ -242,7 +258,7 @@ class SnapGridPane extends JPanel {
 
     private void drawCurrentPosition(Graphics g){
         Color original = g.getColor();
-        System.out.println("currentpos is "+currentPos);
+        //System.out.println("currentpos is "+currentPos);
         if (currentPos!=null && placed==false){
             g.setColor(Color.PINK);
             int markerSize = 8;
@@ -254,7 +270,7 @@ class SnapGridPane extends JPanel {
 
     private void drawDragPointMarker(Graphics g){
         Color original = g.getColor();
-        System.out.println("Dragpoint is "+dragPoint);
+        //System.out.println("Dragpoint is "+dragPoint);
         if (dragPoint!=null && placed == false){
             g.setColor(Color.GREEN);
             int markerSize = 8;
