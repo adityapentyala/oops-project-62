@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainPage extends JFrame {
+    private JButton newPlanButton; // Declare as a class-level field for easy access
+    private JButton loadPlanButton;
 
     public MainPage() {
         // Frame properties
@@ -36,40 +38,46 @@ public class MainPage extends JFrame {
         buttonPanel.setLayout(new FlowLayout());
 
         // New Plan Button
-        JButton newPlanButton = new JButton("New Plan");
+        newPlanButton = new JButton("New Plan");
         ImageIcon icon2 = new ImageIcon("./assets/newfile.png"); 
-        Image resizedImage2 = icon2.getImage().getScaledInstance(30,30, java.awt.Image.SCALE_SMOOTH);
+        Image resizedImage2 = icon2.getImage().getScaledInstance(40,40, java.awt.Image.SCALE_SMOOTH);
         ImageIcon newPlanIcon = new ImageIcon(resizedImage2);
         newPlanButton.setIcon(newPlanIcon);
         newPlanButton.setPreferredSize(new Dimension(200, 80));
-        newPlanButton.setIconTextGap(5);
+        newPlanButton.setIconTextGap(10);
+        newPlanButton.setFocusPainted(false);
+        newPlanButton.setFont(new Font("Arial", Font.PLAIN, 15));
         buttonPanel.add(newPlanButton);
 
         // Load Plan Button
-        JButton loadPlanButton = new JButton("Load Plan");
+        loadPlanButton = new JButton("Load Plan");
         ImageIcon icon3 = new ImageIcon("./assets/folder.png"); 
-        Image resizedImage3 = icon3.getImage().getScaledInstance(30,30, java.awt.Image.SCALE_SMOOTH);
+        Image resizedImage3 = icon3.getImage().getScaledInstance(40,40, java.awt.Image.SCALE_SMOOTH);
         ImageIcon loadPlanIcon = new ImageIcon(resizedImage3);
         loadPlanButton.setIcon(loadPlanIcon);
         loadPlanButton.setPreferredSize(new Dimension(200, 80));
-        loadPlanButton.setIconTextGap(5);
+        loadPlanButton.setIconTextGap(10);
+        loadPlanButton.setFocusPainted(false);
+        loadPlanButton.setFont(new Font("Arial", Font.PLAIN, 15));
         buttonPanel.add(loadPlanButton);
 
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         add(mainPanel);
 
         // Button Actions
-        newPlanButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Open a new empty frame
-                JFrame newPlanFrame = new JFrame("New Plan");
-                newPlanFrame.setSize(1000, 600);
-                newPlanFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                newPlanFrame.setLocationRelativeTo(null);
-                newPlanFrame.setVisible(true);
-            }
-        });
+
+        // newPlanButton.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         // Open a new empty frame
+        //         JFrame newPlanFrame = new JFrame("New Plan");
+        //         newPlanFrame.setSize(1000, 600);
+        //         newPlanFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //         newPlanFrame.setLocationRelativeTo(null);
+        //         newPlanFrame.setVisible(true);
+        //     }
+        // });
+
 
         loadPlanButton.addActionListener(new ActionListener() {
             @Override
@@ -79,8 +87,15 @@ public class MainPage extends JFrame {
                 fileChooser.showOpenDialog(MainPage.this);
             }
         });
+        
         setVisible(true);
     }
+
+    public void addNewPlanListener(ActionListener listener) {
+        newPlanButton.addActionListener(listener);
+    }
+
+    
 
     // public static void main(String[] args) {
     //     SwingUtilities.invokeLater(new Runnable() {

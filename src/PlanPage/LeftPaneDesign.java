@@ -10,7 +10,7 @@ public class LeftPaneDesign extends JPanel {
     private JButton boundaryViewBtn, roomViewBtn, selectionViewBtn;
     private JButton wallBtn, windowBtn, doorBtn;
     private JButton livingRoomBtn, kitchenBtn, bathroomBtn, bedroomBtn, diningRoomBtn;
-    private JButton deleteBtn, cancelBtn, saveBtn;
+    private JButton deleteBtn, rotateBtn, saveBtn;
 
     public LeftPaneDesign() {
         selectionState.selection.put("view", 0);
@@ -46,16 +46,41 @@ public class LeftPaneDesign extends JPanel {
         // Action Panel for dynamic buttons (Boundary or Room View options)
         actionPanel = new JPanel();
         actionPanel.setLayout(new GridLayout(5, 1, 5, 5)); // Placeholder for dynamic buttons
+        //bottomPanel.setPreferredSize(new Dimension(300, 80));
         showBoundaryButtons(); // Initially show Boundary View buttons
+
 
         // Bottom Panel for Delete, Cancel, Save buttons
         bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.BLACK);
         bottomPanel.setLayout(new GridLayout(1, 3, 5, 5));
-        deleteBtn = new JButton("Delete");
-        cancelBtn = new JButton("Cancel");
-        saveBtn = new JButton("Save");
+
+        ImageIcon icon1 = new ImageIcon("assets/delete.png");
+        Image resizedImage1 = icon1.getImage().getScaledInstance(40,40, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon deleteIcon = new ImageIcon(resizedImage1);
+
+        ImageIcon icon2 = new ImageIcon("assets/rotate.png");
+        Image resizedImage2 = icon2.getImage().getScaledInstance(40,40, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon rotateIcon = new ImageIcon(resizedImage2);
+
+        ImageIcon icon3 = new ImageIcon("assets/save.png");
+        Image resizedImage3 = icon3.getImage().getScaledInstance(40,40, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon saveIcon = new ImageIcon(resizedImage3);
+
+        deleteBtn = new JButton(deleteIcon);
+        deleteBtn.setBorderPainted(false);
+        rotateBtn = new JButton(rotateIcon);
+        rotateBtn.setBorderPainted(false);
+        saveBtn = new JButton(saveIcon);
+        saveBtn.setBorderPainted(false);
+
+        deleteBtn.setFocusable(false);
+        rotateBtn.setFocusable(false);
+        saveBtn.setFocusable(false);
+
+
         bottomPanel.add(deleteBtn);
-        bottomPanel.add(cancelBtn);
+        bottomPanel.add(rotateBtn);
         bottomPanel.add(saveBtn);
 
         deleteBtn.addActionListener(e -> {
