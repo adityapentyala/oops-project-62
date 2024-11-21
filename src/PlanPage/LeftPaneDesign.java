@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 public class LeftPaneDesign extends JPanel {
     // Main frame components
-    private JPanel mainPanel, viewPanel, actionPanel, controlPanel, bottomPanel;
+    private JPanel mainPanel, viewPanel, actionPanel, controlPanel, bottomPanel,logoPanel,topPanel;
     private JButton boundaryViewBtn, roomViewBtn, selectionViewBtn;
     private JButton wallBtn, windowBtn, doorBtn;
     private JButton livingRoomBtn, kitchenBtn, bathroomBtn, bedroomBtn, diningRoomBtn;
@@ -26,6 +26,24 @@ public class LeftPaneDesign extends JPanel {
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.LIGHT_GRAY);
 
+        topPanel = new JPanel(new BorderLayout());
+
+        // Add a logo panel at the top
+        logoPanel = new JPanel();
+        logoPanel.setLayout(new BorderLayout());
+        logoPanel.setBackground(Color.WHITE); 
+
+        // Load the logo image
+        ImageIcon logoIcon = new ImageIcon("assets/logo.png"); 
+        Image logoImage = logoIcon.getImage().getScaledInstance(400, 120, Image.SCALE_SMOOTH); // Scale to fit width
+        ImageIcon resizedLogoIcon = new ImageIcon(logoImage);
+
+        // Add logo to a JLabel
+        JLabel logoLabel = new JLabel();
+        logoLabel.setIcon(resizedLogoIcon);
+        logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        logoPanel.add(logoLabel, BorderLayout.CENTER);      
+
         // Top View Panel for Boundary/Room toggle buttons
         viewPanel = new JPanel();
         viewPanel.setLayout(new GridLayout(1, 2, 5, 5));
@@ -38,10 +56,19 @@ public class LeftPaneDesign extends JPanel {
         roomViewBtn.setEnabled(true);
         selectionViewBtn.setEnabled(false);
 
+        Insets buttonPadding = new Insets(15, 20, 15, 20); // Top, Left, Bottom, Right
+        boundaryViewBtn.setMargin(buttonPadding);
+        roomViewBtn.setMargin(buttonPadding);
+        selectionViewBtn.setMargin(buttonPadding);
+
         // Add toggle buttons
         viewPanel.add(boundaryViewBtn);
         viewPanel.add(roomViewBtn);
         viewPanel.add(selectionViewBtn);
+        viewPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
+        topPanel.add(logoPanel, BorderLayout.NORTH);
+        topPanel.add(viewPanel, BorderLayout.SOUTH);
 
         // Action Panel for dynamic buttons (Boundary or Room View options)
         actionPanel = new JPanel();
@@ -56,15 +83,15 @@ public class LeftPaneDesign extends JPanel {
         bottomPanel.setLayout(new GridLayout(1, 3, 5, 5));
 
         ImageIcon icon1 = new ImageIcon("assets/delete.png");
-        Image resizedImage1 = icon1.getImage().getScaledInstance(40,40, java.awt.Image.SCALE_SMOOTH);
+        Image resizedImage1 = icon1.getImage().getScaledInstance(30,30, java.awt.Image.SCALE_SMOOTH);
         ImageIcon deleteIcon = new ImageIcon(resizedImage1);
 
         ImageIcon icon2 = new ImageIcon("assets/rotate.png");
-        Image resizedImage2 = icon2.getImage().getScaledInstance(40,40, java.awt.Image.SCALE_SMOOTH);
+        Image resizedImage2 = icon2.getImage().getScaledInstance(30,30, java.awt.Image.SCALE_SMOOTH);
         ImageIcon rotateIcon = new ImageIcon(resizedImage2);
 
         ImageIcon icon3 = new ImageIcon("assets/save.png");
-        Image resizedImage3 = icon3.getImage().getScaledInstance(40,40, java.awt.Image.SCALE_SMOOTH);
+        Image resizedImage3 = icon3.getImage().getScaledInstance(30,30, java.awt.Image.SCALE_SMOOTH);
         ImageIcon saveIcon = new ImageIcon(resizedImage3);
 
         deleteBtn = new JButton(deleteIcon);
@@ -95,7 +122,7 @@ public class LeftPaneDesign extends JPanel {
         });
 
         // Combine panels
-        mainPanel.add(viewPanel, BorderLayout.NORTH);
+        mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(actionPanel, BorderLayout.CENTER);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
