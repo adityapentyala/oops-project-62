@@ -43,6 +43,7 @@ public class Utils {
            int initial_height=selected_room.height;
 
            //Updates values
+           if(initial_height>=initial_width){
            new_topLeft.x=selected_room.topLeft.x;
            new_topLeft.y=selected_room.topLeft.y;
 
@@ -56,7 +57,23 @@ public class Utils {
            new_room.topLeft=new_topLeft;
            new_room.bottomRight=new_bottomRight;
            new_room.height=new_height;
-           new_room.width=new_width;
+           new_room.width=new_width;}
+           else{
+            new_topLeft.x=selected_room.topLeft.x;
+            new_topLeft.y=selected_room.topLeft.y-(initial_width-initial_height);
+ 
+            new_height = initial_width;
+            new_width = initial_height;
+ 
+            new_bottomRight.x=selected_room.bottomRight.x-(initial_width-initial_height);
+            new_bottomRight.y=new_room.bottomRight.y;
+ 
+            //Updating room coordinates
+            new_room.topLeft=new_topLeft;
+            new_room.bottomRight=new_bottomRight;
+            new_room.height=new_height;
+            new_room.width=new_width;
+           }
 
         //    new_room.topLeft.x=new_topLeft.x;
         //    new_room.topLeft.y=new_topLeft.y;
