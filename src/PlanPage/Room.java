@@ -1,10 +1,12 @@
 package src.PlanPage;
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class Room{
     Point topLeft, bottomRight, topRight, bottomLeft;
     int width, height, id;
-    public Room(Point start, Point end, int _id){
+    ArrayList<Line> walls = new ArrayList<>();
+        public Room(Point start, Point end, int _id, ArrayList<Line> lines){
         if (start.x<end.x && start.y<end.y){
             this.topLeft=new Point(start.x, start.y);
             this.bottomRight=new Point(end.x, end.y);
@@ -22,5 +24,6 @@ public class Room{
         this.width = bottomRight.x-topLeft.x;
         this.height = bottomRight.y-topLeft.y;
         this.id = _id;
+        this.walls = lines;
     }
 }

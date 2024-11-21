@@ -7,15 +7,15 @@ import java.awt.event.ActionListener;
 public class LeftPaneDesign extends JPanel {
     // Main frame components
     private JPanel mainPanel, viewPanel, actionPanel, controlPanel, bottomPanel;
-    private JButton boundaryViewBtn, roomViewBtn;
+    private JButton boundaryViewBtn, roomViewBtn, selectionViewBtn;
     private JButton wallBtn, windowBtn, doorBtn;
     private JButton livingRoomBtn, kitchenBtn, bathroomBtn, bedroomBtn, diningRoomBtn;
     private JButton deleteBtn, cancelBtn, saveBtn;
 
     public LeftPaneDesign() {
-        selectionState.selection.put("view", 1);
+        selectionState.selection.put("view", 0);
         selectionState.selection.put("room", 0);
-        selectionState.selection.put("boundary", 1);
+        selectionState.selection.put("boundary", 0);
         selectionState.selection.put("fixture", 0);
         // setTitle("Floor Planner - Left Pane Design");
         // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,14 +31,17 @@ public class LeftPaneDesign extends JPanel {
         viewPanel.setLayout(new GridLayout(1, 2, 5, 5));
         boundaryViewBtn = new JButton("Boundary View");
         roomViewBtn = new JButton("Room View");
+        selectionViewBtn = new JButton("Selection View");
 
         // Set initial state
-        boundaryViewBtn.setEnabled(false); // Default is Boundary View
+        boundaryViewBtn.setEnabled(true); // Default is Boundary View
         roomViewBtn.setEnabled(true);
+        selectionViewBtn.setEnabled(false);
 
         // Add toggle buttons
         viewPanel.add(boundaryViewBtn);
         viewPanel.add(roomViewBtn);
+        viewPanel.add(selectionViewBtn);
 
         // Action Panel for dynamic buttons (Boundary or Room View options)
         actionPanel = new JPanel();
@@ -55,6 +58,17 @@ public class LeftPaneDesign extends JPanel {
         bottomPanel.add(cancelBtn);
         bottomPanel.add(saveBtn);
 
+        deleteBtn.addActionListener(e -> {
+            if (selectionState.selectedRoom!=null){
+                SnapGridPane.rooms.remove(selectionState.selectedRoom);
+                for (Line line: selectionState.selectedRoom.walls){
+                    System.out.println(SnapGridPane.lines.size());
+                    SnapGridPane.lines.remove(line);
+                    System.out.println(SnapGridPane.lines.size());
+                }
+            }
+        });
+
         // Combine panels
         mainPanel.add(viewPanel, BorderLayout.NORTH);
         mainPanel.add(actionPanel, BorderLayout.CENTER);
@@ -66,6 +80,7 @@ public class LeftPaneDesign extends JPanel {
         boundaryViewBtn.addActionListener(e -> {
             boundaryViewBtn.setEnabled(false);
             roomViewBtn.setEnabled(true);
+            selectionViewBtn.setEnabled(true);
             showBoundaryButtons();
             selectionState.selection.put("view", 1);
             selectionState.selection.put("room", 0);
@@ -76,9 +91,20 @@ public class LeftPaneDesign extends JPanel {
         roomViewBtn.addActionListener(e -> {
             roomViewBtn.setEnabled(false);
             boundaryViewBtn.setEnabled(true);
+            selectionViewBtn.setEnabled(true);
             showRoomButtons();
             selectionState.selection.put("view", 2);
             selectionState.selection.put("room", 4);
+            selectionState.selection.put("boundary", 0);
+            selectionState.selection.put("fixture", 0);
+        });
+
+        selectionViewBtn.addActionListener(e -> {
+            selectionViewBtn.setEnabled(false);
+            boundaryViewBtn.setEnabled(true);
+            roomViewBtn.setEnabled(true);
+            selectionState.selection.put("view", 0);
+            selectionState.selection.put("room", 0);
             selectionState.selection.put("boundary", 0);
             selectionState.selection.put("fixture", 0);
         });
