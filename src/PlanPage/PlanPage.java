@@ -119,6 +119,7 @@ class SnapGridPane extends JPanel {
                         //System.out.println(" "+startPoint+snapPoint);
                         if (Utils.overlap_checker(rooms, new Room(startPoint, snapPoint, selectionState.selection.get("room"), new ArrayList<Line>()), false) == 1){
                             System.out.println("OVERLAP!!!!");
+                            showOverlapDialog();
                             startPoint = null;
                             placed = true;
                             repaint();
@@ -157,6 +158,7 @@ class SnapGridPane extends JPanel {
                 if (moving == true){
                     rooms.remove(selectedRoom);
                     if (Utils.overlap_checker(rooms, movedRoom, false)==1){
+                        showOverlapDialog();
                         System.out.println("OVERLAP!!!!");
                         rooms.add(selectedRoom);
                     } else {
@@ -200,31 +202,32 @@ class SnapGridPane extends JPanel {
                     //System.out.println(" "+startPoint+snapPoint);
                     if (Utils.overlap_checker(rooms, new Room(startPoint, dragPoint, selectionState.selection.get("room"), new ArrayList<Line>()), false) == 1){
                         System.out.println("OVERLAP!!!!");
+                        showOverlapDialog();
                         startPoint = null;
                         placed = true;
                         repaint();
                         placed = false;
                     } else {
                         matrixUtilities.addRoom(gridMatrix, startPoint, dragPoint, 4);
-                    Line l1, l2, l3, l4;
-                    l1=new Line(startPoint, new Point (dragPoint.x, startPoint.y), 1);
-                    l2=new Line(startPoint, new Point (startPoint.x, dragPoint.y), 1);
-                    l3=new Line(dragPoint, new Point (startPoint.x, dragPoint.y), 1);
-                    l4=new Line(dragPoint, new Point (dragPoint.x, startPoint.y), 1);
-                    lines.add(l1);
-                    lines.add(l2);
-                    lines.add(l3);
-                    lines.add(l4);
+                        Line l1, l2, l3, l4;
+                        l1=new Line(startPoint, new Point (dragPoint.x, startPoint.y), 1);
+                        l2=new Line(startPoint, new Point (startPoint.x, dragPoint.y), 1);
+                        l3=new Line(dragPoint, new Point (startPoint.x, dragPoint.y), 1);
+                        l4=new Line(dragPoint, new Point (dragPoint.x, startPoint.y), 1);
+                        lines.add(l1);
+                        lines.add(l2);
+                        lines.add(l3);
+                        lines.add(l4);
 
-                    ArrayList<Line> newWalls = new ArrayList<>();
-                    newWalls.add(l1);
-                    newWalls.add(l2);
-                    newWalls.add(l3);
-                    newWalls.add(l4);
-                    rooms.add(new Room(startPoint, dragPoint, selectionState.selection.get("room"), newWalls));
-                    startPoint = null;
-                    placed = true;
-                    //System.out.println(" "+selectionState.selection.get("room"));
+                        ArrayList<Line> newWalls = new ArrayList<>();
+                        newWalls.add(l1);
+                        newWalls.add(l2);
+                        newWalls.add(l3);
+                        newWalls.add(l4);
+                        rooms.add(new Room(startPoint, dragPoint, selectionState.selection.get("room"), newWalls));
+                        startPoint = null;
+                        placed = true;
+                        //System.out.println(" "+selectionState.selection.get("room"));
                     }
                 }
                 repaint();
@@ -281,8 +284,15 @@ class SnapGridPane extends JPanel {
                 }
             }
         });
+    }
 
-
+    public void showOverlapDialog() {
+        JOptionPane.showMessageDialog(
+                null,                  // Parent component (null centers on screen)
+                "OVERLAP! Please make sure there is no overlap",                 // Message displayed in the dialog
+                "Overlap Alert",              // Title of the dialog
+                JOptionPane.PLAIN_MESSAGE // Dialog type (no icon, plain message)
+            );
     }
 
     @Override
