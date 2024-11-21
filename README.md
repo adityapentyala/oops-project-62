@@ -5,11 +5,11 @@
 ### Planning Pane
 - [x] add walls
 - [x] add windows
-- [x] add doors
+- [ ] add doors
 - [ ] matrix-grid conversion
 - [ ] boundary deletion dynamic
 - [x] addition of rooms
-- [ ] editing of rooms
+- [x] editing of rooms
 - [x] deletion of rooms
 - [ ] addition of furniture
 - [ ] deletion of furniture

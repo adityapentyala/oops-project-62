@@ -42,14 +42,18 @@ public class PlanPage {
 
 class SnapGridPane extends JPanel {
     private static final int GRID_SIZE = 30;
-    private Point startPoint = null;
+    public static Point startPoint = null;
     public Point currentPos = null;
     public boolean placed = false;
     public int rows = 40;
     public int cols = 25;
     public int gridMatrix[][] = new int[40*30][25*30];
+
     public static ArrayList<Line> lines = new ArrayList<>();
     public static ArrayList<Room> rooms = new ArrayList<>();
+    public static ArrayList<Line> windows = new ArrayList<>();
+    public static ArrayList<Line> doors = new ArrayList<>();
+
     public Point dragPoint = null;
     boolean dragging = false;
     Room selectedRoom = null;
@@ -110,11 +114,26 @@ class SnapGridPane extends JPanel {
                     startPoint = snapPoint;
                 } else {
                     if (selectionState.selection.get("view") == 1 && findValidEndpoints(startPoint, 1).contains(snapPoint)){
-                        lines.add(new Line(startPoint, snapPoint, selectionState.selection.get("boundary")));
-                        startPoint = null;
-                        placed = true;
-                        repaint();
-                        placed = false;
+                        if (selectionState.selection.get("boundary")==3){
+                            int isOuter=0;
+                            for (Line wall: lines){
+                                if (onWall(wall, startPoint, snapPoint)){
+                                        isOuter=isOuter+1;
+                                        if (isOuter > 1){
+                                            System.out.println("NOT OUTER WALL");
+                                            break;
+                                        }
+                                }
+                            }
+                            if (isOuter == 1){
+                                windows.add(new Line(startPoint, snapPoint, selectionState.selection.get("boundary")));
+                            }
+                            startPoint = null;
+                            snapPoint = null;
+                            placed = true;
+                            repaint();
+                            placed = false;
+                        }
                     } else if (selectionState.selection.get("view") == 2 && selectionState.selection.get("room") !=0) {
                         //System.out.println(" "+startPoint+snapPoint);
                         if (Utils.overlap_checker(rooms, new Room(startPoint, snapPoint, selectionState.selection.get("room"), new ArrayList<Line>()), false) == 1){
@@ -195,7 +214,7 @@ class SnapGridPane extends JPanel {
 
                 //System.out.println(startPoint+" "+dragPoint);
                 if (startPoint!=null && dragPoint!=null && selectionState.selection.get("view") == 1 && findValidEndpoints(startPoint, 1).contains(dragPoint)){
-                    lines.add(new Line(startPoint, dragPoint, selectionState.selection.get("boundary")));
+                    // lines.add(new Line(startPoint, dragPoint, selectionState.selection.get("boundary")));
                     startPoint = null;
                     placed = true;
                 } else if (startPoint!=null && dragPoint!=null&& selectionState.selection.get("view") == 2 && selectionState.selection.get("room") !=0) {
@@ -295,6 +314,13 @@ class SnapGridPane extends JPanel {
             );
     }
 
+    public static boolean onWall(Line wall, Point startPoint, Point snapPoint){
+        return ((wall.start.x<=startPoint.x && wall.end.x>=snapPoint.x && startPoint.y==wall.start.y) ||
+        (wall.start.y<=startPoint.y && wall.end.y>=snapPoint.y && startPoint.x==wall.start.x) ||
+        (wall.start.x>=startPoint.x && wall.end.x<=snapPoint.x && startPoint.y==wall.start.y) ||
+        (wall.start.y>=startPoint.y && wall.end.y<=snapPoint.y && startPoint.x==wall.start.x));
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -302,6 +328,7 @@ class SnapGridPane extends JPanel {
         drawSelectedRoom(g);
         drawGrid(g);
         drawLines(g);
+        drawWindows(g);
         drawStartPointMarker(g);
         drawValidEndpoints(g, startPoint, selectionState.selection.get("view"));
         drawEndPointMarker(g);
@@ -331,13 +358,19 @@ class SnapGridPane extends JPanel {
         Graphics2D g2d =(Graphics2D) g;
         g2d.setStroke(new BasicStroke(3));
         for (Line line : lines) {
-            if (line.id == 1){
-                g2d.setColor(Color.BLACK);
-            } else if (line.id == 3){
-                g2d.setColor(Color.CYAN);
-            } else if (line.id == 2) {
-                g2d.setColor(Color.WHITE);
-            }
+            g2d.setColor(Color.BLACK);
+            g2d.drawLine(line.start.x, line.start.y, line.end.x, line.end.y);
+        }
+        g2d.setStroke(new BasicStroke(1));
+        g2d.setColor(original);
+    }
+
+    private void drawWindows(Graphics g){
+        Color original = g.getColor();
+        Graphics2D g2d =(Graphics2D) g;
+        g2d.setStroke(new BasicStroke(3));
+        for (Line line: windows){
+            g2d.setColor(Color.CYAN);
             g2d.drawLine(line.start.x, line.start.y, line.end.x, line.end.y);
         }
         g2d.setStroke(new BasicStroke(1));

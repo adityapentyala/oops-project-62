@@ -115,10 +115,22 @@ public class LeftPaneDesign extends JPanel {
             if (selectionState.selectedRoom!=null){
                 SnapGridPane.rooms.remove(selectionState.selectedRoom);
                 for (Line line: selectionState.selectedRoom.walls){
-                    System.out.println(SnapGridPane.lines.size());
+                    //System.out.println(SnapGridPane.lines.size());
                     SnapGridPane.lines.remove(line);
-                    System.out.println(SnapGridPane.lines.size());
+                    //System.out.println(SnapGridPane.lines.size());
                 }
+                ArrayList<Line> toRemove = new ArrayList<>();
+                for (Line window: SnapGridPane.windows){
+                    for (Line wall: selectionState.selectedRoom.walls){
+                        if (SnapGridPane.onWall(wall, window.start, window.end)){
+                            toRemove.add(window);
+                        }
+                    }
+                }
+                for (Line window: toRemove){
+                    SnapGridPane.windows.remove(window);
+                }
+                selectionState.selectedRoom=null;
             }
         });
 
