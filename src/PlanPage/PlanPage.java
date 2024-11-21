@@ -17,11 +17,13 @@ public class PlanPage {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Snap Grid Designer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(LENGTH*30, WIDTH*30);
+        //frame.setSize(LENGTH*30, WIDTH*30);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(false);
 
         // Design Pane
         JPanel designPane = new LeftPaneDesign();
-        designPane.setBackground(Color.LIGHT_GRAY);
+        designPane.setBackground(Color.BLACK);
         designPane.setPreferredSize(new Dimension((int)(0.75*LENGTH*30), WIDTH*30));
 
         // Snap Grid Pane
@@ -51,14 +53,6 @@ class SnapGridPane extends JPanel {
     public Point dragPoint = null;
     boolean dragging = false;
     Room selectedRoom = null;
-
-    Room movedRoom = null;
-    boolean moving = false;
-    int dist_x=0;
-    int dist_y=0;
-    int _width = 0;
-    int _height = 0;
-    int _id;
 
     
 
@@ -152,43 +146,6 @@ class SnapGridPane extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e){
                 dragging = false;
-                if (moving == true){
-                    rooms.remove(selectedRoom);
-                    if (Utils.overlap_checker(rooms, movedRoom)==1){
-                        System.out.println("OVERLAP!!!!");
-                        rooms.add(selectedRoom);
-                    } else {
-                        for (Line line: selectedRoom.walls){
-                            lines.remove(line);
-                        }
-                        Line l1, l2, l3, l4;
-                        l1 = new Line(movedRoom.topLeft, new Point(movedRoom.topLeft.x, movedRoom.bottomRight.y), 1);
-                        l2 = new Line(movedRoom.topLeft, new Point(movedRoom.bottomRight.x, movedRoom.topLeft.y), 1);
-                        l3 = new Line(movedRoom.bottomRight, new Point(movedRoom.topLeft.x, movedRoom.bottomRight.y), 1);
-                        l4 = new Line(movedRoom.bottomRight, new Point(movedRoom.bottomRight.x, movedRoom.topLeft.y), 1);
-                        lines.add(l1);
-                        lines.add(l2);
-                        lines.add(l3);
-                        lines.add(l4);
-                        ArrayList<Line> newWalls = new ArrayList<>();
-                        newWalls.add(l1);
-                        newWalls.add(l2);
-                        newWalls.add(l3);
-                        newWalls.add(l4);
-                        movedRoom.walls = newWalls;
-                        rooms.add(movedRoom);
-                    }
-                    moving = false;
-                    dist_x = 0;
-                    dist_y = 0;
-                    movedRoom = null;
-                    _width = 0;
-                    _height = 0;
-                    _id = 0;
-                    selectedRoom = null;
-                    repaint();
-                }
-
                 //System.out.println(startPoint+" "+dragPoint);
                 if (startPoint!=null && dragPoint!=null && selectionState.selection.get("view") == 1 && findValidEndpoints(startPoint, 1).contains(dragPoint)){
                     lines.add(new Line(startPoint, dragPoint, selectionState.selection.get("boundary")));
@@ -246,36 +203,6 @@ class SnapGridPane extends JPanel {
                     currentPos = snapToGrid(e.getPoint());
                     // System.out.println(currentPos+" "+dragPoint);
                     repaint();
-                    Room tempRoom = null;
-                    if (selectionState.selection.get("view") == 0 && moving == false){
-                        boolean selected = false;
-                        for (Room room: rooms){
-                            if (e.getPoint().x>room.topLeft.x && e.getPoint().x<room.bottomRight.x 
-                            && e.getPoint().y>room.topLeft.y && e.getPoint().y<room.bottomRight.y){
-                                selectedRoom = room;
-                                selectionState.selectedRoom = selectedRoom;
-                                selected = true;
-                                repaint();
-                                break;
-                            }
-                        }
-                        if (selected==false){
-                            selectedRoom = null;
-                        } else {
-                            movedRoom = selectedRoom;
-                            moving = true;
-                            dist_x = dragPoint.x-selectedRoom.topLeft.x;
-                            dist_y = dragPoint.y-selectedRoom.topLeft.y;
-                            _width = selectedRoom.width;
-                            _height = selectedRoom.height;
-                            _id = selectedRoom.id;
-                        }
-                        repaint();
-                    } else if (selectionState.selection.get("view") == 0 && moving == true){
-                        movedRoom = new Room(new Point(dragPoint.x-dist_x, dragPoint.y-dist_y), 
-                                        new Point(dragPoint.x-dist_x+_width, dragPoint.y-dist_y+_height),
-                                         _id, new ArrayList<>());
-                    }
                 }
             }
         });
@@ -293,7 +220,6 @@ class SnapGridPane extends JPanel {
         drawStartPointMarker(g);
         drawValidEndpoints(g, startPoint, selectionState.selection.get("view"));
         drawEndPointMarker(g);
-        drawMovingRoom(g);
         drawCurrentPosition(g);
         drawDragPointMarker(g);
     }
@@ -437,15 +363,6 @@ class SnapGridPane extends JPanel {
             }
             
             // System.out.println(" "+room);
-        }
-        g.setColor(original);
-    }
-
-    private void drawMovingRoom(Graphics g){
-        Color original = g.getColor();
-        if (moving==true && movedRoom!=null){
-            g.setColor(selectionState.colorMap.get(movedRoom.id));
-            g.fillRect(movedRoom.topLeft.x+2, movedRoom.topLeft.y+2, movedRoom.width-2, movedRoom.height-2);
         }
         g.setColor(original);
     }

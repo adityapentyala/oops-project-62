@@ -11,7 +11,8 @@ public class MainPage extends JFrame {
     public MainPage() {
         // Frame properties
         setTitle("AVA Floor Planner 2D");
-        setSize(1000, 600);
+        //setSize(1000, 600);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
