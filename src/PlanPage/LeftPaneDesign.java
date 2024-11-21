@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class LeftPaneDesign extends JPanel {
     // Main frame components
@@ -118,6 +119,34 @@ public class LeftPaneDesign extends JPanel {
                     SnapGridPane.lines.remove(line);
                     System.out.println(SnapGridPane.lines.size());
                 }
+            }
+        });
+
+        rotateBtn.addActionListener(e -> {
+            if (selectionState.selectedRoom!=null){
+                System.out.println("Rotating");
+                for (Line line: selectionState.selectedRoom.walls) {
+                    SnapGridPane.lines.remove(line);
+                }
+                SnapGridPane.rooms.remove(selectionState.selectedRoom);
+                Room newRoom = Utils.rotate(selectionState.selectedRoom,1, SnapGridPane.rooms);
+                Line l1, l2, l3, l4;
+                        l1 = new Line(newRoom.topLeft, new Point(newRoom.topLeft.x, newRoom.bottomRight.y), 1);
+                        l2 = new Line(newRoom.topLeft, new Point(newRoom.bottomRight.x, newRoom.topLeft.y), 1);
+                        l3 = new Line(newRoom.bottomRight, new Point(newRoom.topLeft.x, newRoom.bottomRight.y), 1);
+                        l4 = new Line(newRoom.bottomRight, new Point(newRoom.bottomRight.x, newRoom.topLeft.y), 1);
+                        SnapGridPane.lines.add(l1);
+                        SnapGridPane.lines.add(l2);
+                        SnapGridPane.lines.add(l3);
+                        SnapGridPane.lines.add(l4);
+                        ArrayList<Line> newWalls = new ArrayList<>();
+                        newWalls.add(l1);
+                        newWalls.add(l2);
+                        newWalls.add(l3);
+                        newWalls.add(l4);
+                        newRoom.walls = newWalls;
+                SnapGridPane.rooms.add(newRoom);
+                selectionState.selectedRoom=null;
             }
         });
 
