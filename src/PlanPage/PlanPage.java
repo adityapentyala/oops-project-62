@@ -117,7 +117,7 @@ class SnapGridPane extends JPanel {
                         placed = false;
                     } else if (selectionState.selection.get("view") == 2 && selectionState.selection.get("room") !=0) {
                         //System.out.println(" "+startPoint+snapPoint);
-                        if (Utils.overlap_checker(rooms, new Room(startPoint, snapPoint, selectionState.selection.get("room"), new ArrayList<Line>())) == 1){
+                        if (Utils.overlap_checker(rooms, new Room(startPoint, snapPoint, selectionState.selection.get("room"), new ArrayList<Line>()), false) == 1){
                             System.out.println("OVERLAP!!!!");
                             startPoint = null;
                             placed = true;
@@ -156,7 +156,7 @@ class SnapGridPane extends JPanel {
                 dragging = false;
                 if (moving == true){
                     rooms.remove(selectedRoom);
-                    if (Utils.overlap_checker(rooms, movedRoom)==1){
+                    if (Utils.overlap_checker(rooms, movedRoom, false)==1){
                         System.out.println("OVERLAP!!!!");
                         rooms.add(selectedRoom);
                     } else {
@@ -198,7 +198,7 @@ class SnapGridPane extends JPanel {
                     placed = true;
                 } else if (startPoint!=null && dragPoint!=null&& selectionState.selection.get("view") == 2 && selectionState.selection.get("room") !=0) {
                     //System.out.println(" "+startPoint+snapPoint);
-                    if (Utils.overlap_checker(rooms, new Room(startPoint, dragPoint, selectionState.selection.get("room"), new ArrayList<Line>())) == 1){
+                    if (Utils.overlap_checker(rooms, new Room(startPoint, dragPoint, selectionState.selection.get("room"), new ArrayList<Line>()), false) == 1){
                         System.out.println("OVERLAP!!!!");
                         startPoint = null;
                         placed = true;
