@@ -10,16 +10,17 @@
 - [x] addition of rooms
 - [x] editing of rooms
 - [x] deletion of rooms
-- [ ] addition of furniture
+- [x] addition of furniture
+- [ ] editing of furniture
 - [ ] deletion of furniture
 
 ### Design Pane
-- [ ] delete/rotate/save buttons at the bottom
+- [x] delete/rotate/save buttons at the bottom
 - [x] switch between boundary view and rooms view
 - [x] boundary view - select & return 1: wall, 2: window, 3: door
 - [x] rooms view - select & return 4: LR, 5: Kitchen, 6: Bathroom, 7:, 8:, etc.
 
 ### file management
-- [ ] saving list of walls, list of windows, list of doors & matrix of grid cells to file
-- [ ] loading file with lists & matrix
-- [ ] open in planning window
+- [x] saving list of walls, list of windows, list of doors, list of furniture, list of rooms
+- [x] loading file with lists
+- [x] open in planning window
