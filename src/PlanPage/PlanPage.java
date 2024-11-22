@@ -125,8 +125,54 @@ class SnapGridPane extends JPanel {
                                         }
                                 }
                             }
+                            for (Line door: doors){
+                                if (onWall(door, startPoint, snapPoint)){
+                                    isOuter=0;
+                                    System.out.println("window door overlap");
+                                    break;
+                                }
+                            }
                             if (isOuter == 1){
                                 windows.add(new Line(startPoint, snapPoint, selectionState.selection.get("boundary")));
+                            }
+                            startPoint = null;
+                            snapPoint = null;
+                            placed = true;
+                            repaint();
+                            placed = false;
+                        }
+                        else if (selectionState.selection.get("boundary")==2){
+
+                            boolean valid = false;
+                            int isValid = 0;
+                            for (Room room: rooms){
+                                if (!(room.id==5 || room.id==6)){
+                                    for (Line wall: room.walls){
+                                        if (onWall(wall, startPoint, snapPoint)){
+                                            isValid+=1;
+                                            break;
+                                        }
+                                    }
+                                    // if (isValid==1){
+                                    //     valid=true;
+                                    // }
+                                }
+                            }
+                            if (isValid<1){
+                                System.out.println("Door cannot be placed outside in bed and bath rooms"+isValid);
+                                valid = false;
+                            } else {
+                                valid=true;
+                            }
+                            for (Line window: windows){
+                                if (onWall(window, startPoint, snapPoint)){
+                                    valid=false;
+                                    System.out.println("window door overlap");
+                                    break;
+                                }
+                            }
+                            if (valid==true){
+                                doors.add(new Line(startPoint, snapPoint, selectionState.selection.get("boundary")));
                             }
                             startPoint = null;
                             snapPoint = null;
@@ -329,6 +375,7 @@ class SnapGridPane extends JPanel {
         drawGrid(g);
         drawLines(g);
         drawWindows(g);
+        drawDoors(g);
         drawStartPointMarker(g);
         drawValidEndpoints(g, startPoint, selectionState.selection.get("view"));
         drawEndPointMarker(g);
@@ -371,6 +418,18 @@ class SnapGridPane extends JPanel {
         g2d.setStroke(new BasicStroke(3));
         for (Line line: windows){
             g2d.setColor(Color.CYAN);
+            g2d.drawLine(line.start.x, line.start.y, line.end.x, line.end.y);
+        }
+        g2d.setStroke(new BasicStroke(1));
+        g2d.setColor(original);
+    }
+
+    private void drawDoors(Graphics g){
+        Color original = g.getColor();
+        Graphics2D g2d =(Graphics2D) g;
+        g2d.setStroke(new BasicStroke(3));
+        for (Line line: doors){
+            g2d.setColor(Color.WHITE);
             g2d.drawLine(line.start.x, line.start.y, line.end.x, line.end.y);
         }
         g2d.setStroke(new BasicStroke(1));
