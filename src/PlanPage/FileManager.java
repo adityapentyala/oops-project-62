@@ -11,18 +11,20 @@ public class FileManager {
         public ArrayList<Line> doors;
         public ArrayList<Line> walls;
         public ArrayList<Line> windows;
+        public ArrayList<FObject> fobjects;
 
-        public PlanData(ArrayList<Room> rooms, ArrayList<Line> doors, ArrayList<Line> walls, ArrayList<Line> windows) {
+        public PlanData(ArrayList<Room> rooms, ArrayList<Line> doors, ArrayList<Line> walls, ArrayList<Line> windows, ArrayList<FObject> fobjects) {
             this.rooms = rooms;
             this.doors = doors;
             this.walls = walls;
             this.windows = windows;
+            this.fobjects = fobjects;
         }
     }
 
-    public static void savePlan(String fileName, ArrayList<Room> rooms, ArrayList<Line> doors, ArrayList<Line> walls, ArrayList<Line> windows) {
+    public static void savePlan(String fileName, ArrayList<Room> rooms, ArrayList<Line> doors, ArrayList<Line> walls, ArrayList<Line> windows, ArrayList<FObject> fobjects) {
         try(ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            PlanData planData = new PlanData(rooms, doors, walls, windows);
+            PlanData planData = new PlanData(rooms, doors, walls, windows, fobjects);
             stream.writeObject(planData);
             System.out.println("Plan saved successfully to: "+fileName);
         } catch (IOException e) {

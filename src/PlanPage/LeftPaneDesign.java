@@ -168,7 +168,7 @@ public class LeftPaneDesign extends JPanel {
 
         saveBtn.addActionListener(e -> {
             System.out.println("Clicked!!");
-            FileManager.savePlan(selectionState.filename, SnapGridPane.rooms, SnapGridPane.doors, SnapGridPane.lines, SnapGridPane.windows);
+            FileManager.savePlan(selectionState.filename, SnapGridPane.rooms, SnapGridPane.doors, SnapGridPane.lines, SnapGridPane.windows, SnapGridPane.fobjects);
             System.out.println("Save button clicked, file saved! ");
         });
 
@@ -219,6 +219,10 @@ public class LeftPaneDesign extends JPanel {
         });
 
         furnitureViewBtn.addActionListener(e -> {
+            selectionState.selection.put("view", 4);
+            selectionState.selection.put("room", 0);
+            selectionState.selection.put("boundary", 0);
+            selectionState.selection.put("fixture", 2);
             furnitureViewBtn.setEnabled(true);
             selectionViewBtn.setEnabled(true);
             boundaryViewBtn.setEnabled(true);

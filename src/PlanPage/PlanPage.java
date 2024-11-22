@@ -4,8 +4,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+
+import javax.imageio.ImageIO;
 
 public class PlanPage {
     static int LENGTH = 40;
@@ -80,6 +86,7 @@ class SnapGridPane extends JPanel {
             lines = selectionState.plan.walls;
             doors = selectionState.plan.doors;
             windows = selectionState.plan.windows;
+            fobjects = selectionState.plan.fobjects;
         }
 
         selectionState.colorMap.put(1, Color.BLACK); // Wall
@@ -93,8 +100,8 @@ class SnapGridPane extends JPanel {
 
         selectionState.FObjectMap.put(1, "assets/chair.png");
         selectionState.FObjectMap.put(2, "assets/diningtable.png");
-        selectionState.selection.put("view", 4);
-        selectionState.selection.put("fixture", 1);
+        //selectionState.selection.put("view", 4);
+        selectionState.selection.put("fixture", 2);
 
         /*selectionState.selection.put("view", 2);
         selectionState.selection.put("room", 4);
@@ -585,10 +592,15 @@ class SnapGridPane extends JPanel {
     }
 
     private void drawFObjects(Graphics g){
-        Color original = g.getColor();
+        //Color original = g.getColor();
         for (FObject f: fobjects){
-            g.drawImage(f.im, f.topLeft.x, f.topLeft.y, null);
-            System.out.println("drew "+f.im);
+            try {
+                g.drawImage(ImageIO.read(new File(f.fname)), f.topLeft.x, f.topLeft.y, null);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            //System.out.println("drew "+f.im);
         }
     }
 
