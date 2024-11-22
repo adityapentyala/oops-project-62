@@ -5,8 +5,7 @@
 ### Planning Pane
 - [x] add walls
 - [x] add windows
-- [ ] add doors
-- [ ] matrix-grid conversion
+- [x] add doors
 - [ ] boundary deletion dynamic
 - [x] addition of rooms
 - [x] editing of rooms
@@ -19,7 +18,6 @@
 - [x] switch between boundary view and rooms view
 - [x] boundary view - select & return 1: wall, 2: window, 3: door
 - [x] rooms view - select & return 4: LR, 5: Kitchen, 6: Bathroom, 7:, 8:, etc.
-- [ ] individual room view - select & return furniture for the room (mapping to be done later)
 
 ### file management
 - [ ] saving list of walls, list of windows, list of doors & matrix of grid cells to file
