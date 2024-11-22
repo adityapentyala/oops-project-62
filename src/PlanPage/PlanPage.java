@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class PlanPage {
@@ -90,8 +91,10 @@ class SnapGridPane extends JPanel {
         selectionState.colorMap.put(7, Color.ORANGE); // Dining area
         selectionState.colorMap.put(8, Color.YELLOW); // Drawing room
 
-        selectionState.FObjectMap.put(1, "../../assets/chair.png");
-        selectionState.FObjectMap.put(2, "../../assets/diningtable.png");
+        selectionState.FObjectMap.put(1, "assets/chair.png");
+        selectionState.FObjectMap.put(2, "assets/diningtable.png");
+        selectionState.selection.put("view", 4);
+        selectionState.selection.put("fixture", 1);
 
         /*selectionState.selection.put("view", 2);
         selectionState.selection.put("room", 4);
@@ -126,15 +129,23 @@ class SnapGridPane extends JPanel {
                     repaint();
                 }
                 else if (selectionState.selection.get("view") == 4 && selectionState.selection.get("fixture")!=0){
-                    if (startPoint == null){
-                        startPoint = snapPoint;
-                        FObject f = new FObject(snapPoint, selectionState.selection.get("fixture"));
-                        fobjects.add(f);
+                    if (true){
+                        FObject f = null;
+                        try {
+                            f = new FObject(snapPoint, selectionState.selection.get("fixture"));
+                        } catch (IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                        if (f!=null) {
+                            fobjects.add(f);
+                        }
+                        System.out.println(fobjects);
                         startPoint = null;
-                            snapPoint = null;
-                            placed = true;
-                            repaint();
-                            placed = false;
+                        snapPoint = null;
+                        placed = true;
+                        repaint();
+                        placed = false;
                     }
                 }
                 else if (startPoint == null) {
@@ -403,6 +414,7 @@ class SnapGridPane extends JPanel {
         drawLines(g);
         drawWindows(g);
         drawDoors(g);
+        drawFObjects(g);
         drawStartPointMarker(g);
         drawValidEndpoints(g, startPoint, selectionState.selection.get("view"));
         drawEndPointMarker(g);
@@ -572,11 +584,13 @@ class SnapGridPane extends JPanel {
         g.setColor(original);
     }
 
-    // private void drawFObjects(Graphics g){
-    //     for (FObject f: fobjects){
-    //         g.drawImage(f.im, f.topLeft.x, f.topLeft.y);
-    //     }
-    // }
+    private void drawFObjects(Graphics g){
+        Color original = g.getColor();
+        for (FObject f: fobjects){
+            g.drawImage(f.im, f.topLeft.x, f.topLeft.y, null);
+            System.out.println("drew "+f.im);
+        }
+    }
 
     private void drawMovingRoom(Graphics g){
         Color original = g.getColor();

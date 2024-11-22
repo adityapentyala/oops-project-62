@@ -2,6 +2,11 @@ package src.PlanPage;
 
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import java.awt.Image;
 
 public class FObject {
@@ -11,11 +16,12 @@ public class FObject {
     Image im;
     String fname;
 
-    public FObject(Point tl, int ID){
+    public FObject(Point tl, int ID) throws IOException{
         this.topLeft=tl;
         this.id = ID;
         Toolkit t=Toolkit.getDefaultToolkit();  
-        fname = selectionState.FObjectMap.get(ID);
-        this.im=t.getImage(fname);  
+        fname = selectionState.FObjectMap.get(ID);  
+        this.im = ImageIO.read(new File(fname));
+        //this.im = t.getImage(fname);
     }
 }
