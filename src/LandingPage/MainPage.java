@@ -80,20 +80,24 @@ public class MainPage extends JFrame {
         // });
 
 
-        loadPlanButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Open file chooser but do nothing with the selected file
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.showOpenDialog(MainPage.this);
-            }
-        });
+        // loadPlanButton.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         // Open file chooser but do nothing with the selected file
+        //         JFileChooser fileChooser = new JFileChooser();
+        //         fileChooser.showOpenDialog(MainPage.this);
+        //     }
+        // });
         
         setVisible(true);
     }
 
     public void addNewPlanListener(ActionListener listener) {
         newPlanButton.addActionListener(listener);
+    }
+
+    public void addLoadPlanListener(ActionListener listener){
+        loadPlanButton.addActionListener(listener);
     }
 
     
