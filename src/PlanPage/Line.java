@@ -1,7 +1,8 @@
 package src.PlanPage;
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Line {
+public class Line implements Serializable {
     Point start, end;
     int id;
 

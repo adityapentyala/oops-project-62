@@ -162,6 +162,12 @@ public class LeftPaneDesign extends JPanel {
             }
         });
 
+        saveBtn.addActionListener(e -> {
+            System.out.println("Clicked!!");
+            FileManager.savePlan(selectionState.filename, SnapGridPane.rooms, SnapGridPane.doors, SnapGridPane.lines, SnapGridPane.windows);
+            System.out.println("Save button clicked, file saved! ");
+        });
+
         // Combine panels
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(actionPanel, BorderLayout.CENTER);

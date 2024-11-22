@@ -14,8 +14,8 @@ public class Utils {
 
         System.out.println(rooms.size()+" "+new_room);
         for (Room room : rooms) {
-            System.out.println(room.bottomRight.x +" " +room.bottomRight.y+" "+ room.topLeft.x +" " + room.topLeft.y);
-            System.out.println(new_room.bottomRight.x +" " +new_room.bottomRight.y+" "+ new_room.topLeft.x +" " + new_room.topLeft.y);
+            //System.out.println(room.bottomRight.x +" " +room.bottomRight.y+" "+ room.topLeft.x +" " + room.topLeft.y);
+            //System.out.println(new_room.bottomRight.x +" " +new_room.bottomRight.y+" "+ new_room.topLeft.x +" " + new_room.topLeft.y);
             // Check if the rectangles overlap
             if (!(room.bottomRight.x <= new_room.topLeft.x ||   // room is to the left
                   room.topLeft.x >= new_room.bottomRight.x ||   // room is to the right

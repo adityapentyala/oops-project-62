@@ -9,8 +9,12 @@ import java.util.ArrayList;
 public class PlanPage {
     static int LENGTH = 40;
     static int WIDTH = 25;
+    public static FileManager.PlanData plan = null;
 
-    public static void main(String[] args) {
+    public static void main(FileManager.PlanData pl) {
+        if (pl != null){
+            plan = pl;
+        }
         SwingUtilities.invokeLater(PlanPage::createAndShowGUI);
     }
 
@@ -27,7 +31,7 @@ public class PlanPage {
         designPane.setPreferredSize(new Dimension((int)(0.75*LENGTH*30), WIDTH*30));
 
         // Snap Grid Pane
-        SnapGridPane snapGridPane = new SnapGridPane();
+        SnapGridPane snapGridPane = new SnapGridPane(plan);
 
         // Split Pane
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, designPane, snapGridPane);
@@ -53,6 +57,7 @@ class SnapGridPane extends JPanel {
     public static ArrayList<Room> rooms = new ArrayList<>();
     public static ArrayList<Line> windows = new ArrayList<>();
     public static ArrayList<Line> doors = new ArrayList<>();
+    public static ArrayList<FObject> fobjects = new ArrayList<>();
 
     public Point dragPoint = null;
     boolean dragging = false;
@@ -68,7 +73,14 @@ class SnapGridPane extends JPanel {
 
     
 
-    public SnapGridPane() {
+    public SnapGridPane(FileManager.PlanData plan) {
+        if (selectionState.load == true && plan!=null){
+            rooms = selectionState.plan.rooms;
+            lines = selectionState.plan.walls;
+            doors = selectionState.plan.doors;
+            windows = selectionState.plan.windows;
+        }
+
         selectionState.colorMap.put(1, Color.BLACK); // Wall
         selectionState.colorMap.put(2, Color.WHITE); // Door
         selectionState.colorMap.put(3, Color.BLUE); // Window
@@ -77,6 +89,9 @@ class SnapGridPane extends JPanel {
         selectionState.colorMap.put(6, Color.BLUE); // Bathroom
         selectionState.colorMap.put(7, Color.ORANGE); // Dining area
         selectionState.colorMap.put(8, Color.YELLOW); // Drawing room
+
+        selectionState.FObjectMap.put(1, "../../assets/chair.png");
+        selectionState.FObjectMap.put(2, "../../assets/diningtable.png");
 
         /*selectionState.selection.put("view", 2);
         selectionState.selection.put("room", 4);
@@ -109,6 +124,18 @@ class SnapGridPane extends JPanel {
                         selectedRoom = null;
                     }
                     repaint();
+                }
+                else if (selectionState.selection.get("view") == 4 && selectionState.selection.get("fixture")!=0){
+                    if (startPoint == null){
+                        startPoint = snapPoint;
+                        FObject f = new FObject(snapPoint, selectionState.selection.get("fixture"));
+                        fobjects.add(f);
+                        startPoint = null;
+                            snapPoint = null;
+                            placed = true;
+                            repaint();
+                            placed = false;
+                    }
                 }
                 else if (startPoint == null) {
                     startPoint = snapPoint;
@@ -544,6 +571,12 @@ class SnapGridPane extends JPanel {
         }
         g.setColor(original);
     }
+
+    // private void drawFObjects(Graphics g){
+    //     for (FObject f: fobjects){
+    //         g.drawImage(f.im, f.topLeft.x, f.topLeft.y);
+    //     }
+    // }
 
     private void drawMovingRoom(Graphics g){
         Color original = g.getColor();

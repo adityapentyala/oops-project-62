@@ -1,8 +1,9 @@
 package src.PlanPage;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Room{
+public class Room implements Serializable{
     Point topLeft, bottomRight, topRight, bottomLeft;
     int width, height, id;
     ArrayList<Line> walls = new ArrayList<>();
