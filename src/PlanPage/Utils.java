@@ -95,6 +95,60 @@ public class Utils {
         return new_room;
   }
 
-  
+public static void Furniture_mapping(){
+    selectionState.FObjectMap.put(01,"assets/Furniture/Bed/Bed_1.jpg");
+    selectionState.FObjectMap.put(02,"assets/Furniture/Bed/Bed_2.jpg");
+    selectionState.FObjectMap.put(03,"assets/Furniture/Bed/Bed_3.jpg");
+    selectionState.FObjectMap.put(04,"assets/Furniture/Bed/Bed_4.jpg");
 
+    selectionState.FObjectMap.put(11,"assets/Furniture/Chiar/Chair_1.jpg");
+    selectionState.FObjectMap.put(12,"assets/Furniture/Chiar/Chair_2.jpg");
+    selectionState.FObjectMap.put(13,"assets/Furniture/Chiar/Chair_3.jpg");
+    selectionState.FObjectMap.put(14,"assets/Furniture/Chiar/Chair_4.jpg");
+
+    selectionState.FObjectMap.put(21,"assets/Furniture/Commode/Commode_1.jpg");
+    selectionState.FObjectMap.put(22,"assets/Furniture/Commode/Commode_2.jpg");
+    selectionState.FObjectMap.put(23,"assets/Furniture/Commode/Commode_3.jpg");
+    selectionState.FObjectMap.put(24,"assets/Furniture/Commode/Commode_4.jpg");
+
+    selectionState.FObjectMap.put(31,"assets/Furniture/DiningSet/DiningSet_1.jpg");
+    selectionState.FObjectMap.put(32,"assets/Furniture/DiningSet/DiningSet_2.jpg");
+    selectionState.FObjectMap.put(33,"assets/Furniture/DiningSet/DiningSet_3.jpg");
+    selectionState.FObjectMap.put(34,"assets/Furniture/DiningSet/DiningSet_4.jpg");
+
+    selectionState.FObjectMap.put(41,"assets/Furniture/Shower/Shower_1.jpg");
+    selectionState.FObjectMap.put(42,"assets/Furniture/Shower/Shower_2.jpg");
+    selectionState.FObjectMap.put(43,"assets/Furniture/Shower/Shower_3.jpg");
+    selectionState.FObjectMap.put(44,"assets/Furniture/Shower/Shower_4.jpg");
+
+    selectionState.FObjectMap.put(51,"assets/Furniture/Sink/Sink_1.jpg");
+    selectionState.FObjectMap.put(52,"assets/Furniture/Sink/Sink_2.jpg");
+    selectionState.FObjectMap.put(53,"assets/Furniture/Sink/Sink_3.jpg");
+    selectionState.FObjectMap.put(54,"assets/Furniture/Sink/Sink_4.jpg");
+
+    selectionState.FObjectMap.put(61,"assets/Furniture/Sofa/Sofa_1.jpg");
+    selectionState.FObjectMap.put(62,"assets/Furniture/Sofa/Sofa_2.jpg");
+    selectionState.FObjectMap.put(63,"assets/Furniture/Sofa/Sofa_3.jpg");
+    selectionState.FObjectMap.put(64,"assets/Furniture/Sofa/Sofa_4.jpg");
+
+    selectionState.FObjectMap.put(71,"assets/Furniture/Stove/Stove_1.jpg");
+    selectionState.FObjectMap.put(72,"assets/Furniture/Stove/Stove_2.jpg");
+    selectionState.FObjectMap.put(73,"assets/Furniture/Stove/Stove_3.jpg");
+    selectionState.FObjectMap.put(74,"assets/Furniture/Stove/Stove_4.jpg");
+    
+    selectionState.FObjectMap.put(81,"assets/Furniture/Table/Table_1.jpg");
+    selectionState.FObjectMap.put(82,"assets/Furniture/Table/Table_2.jpg");
+    selectionState.FObjectMap.put(83,"assets/Furniture/Table/Table_3.jpg");
+    selectionState.FObjectMap.put(84,"assets/Furniture/Table/Table_4.jpg");
+
+    selectionState.FObjectMap.put(91,"assets/Furniture/Washbasin/Washbasin_1.jpg");
+    selectionState.FObjectMap.put(92,"assets/Furniture/Washbasin/Washbasin_2.jpg");
+    selectionState.FObjectMap.put(93,"assets/Furniture/Washbasin/Washbasin_3.jpg");
+    selectionState.FObjectMap.put(94,"assets/Furniture/Washbasin/Washbasin_.jpg");
+}
+
+public static int rotate_fixture(selectionState fixture_state,FObject object){
+
+return 0;
+}
 }
