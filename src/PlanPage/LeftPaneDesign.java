@@ -11,6 +11,7 @@ public class LeftPaneDesign extends JPanel {
     private JButton boundaryViewBtn, roomViewBtn, selectionViewBtn, furnitureViewBtn;
     private JButton wallBtn, windowBtn, doorBtn;
     private JButton livingRoomBtn, kitchenBtn, bathroomBtn, bedroomBtn, diningRoomBtn;
+    private JButton bedBtn, chairBtn, commodeBtn, diningSetBtn, showerBtn, sofaBtn, stoveBtn, tableBtn, washbasinBtn;
     private JButton deleteBtn, rotateBtn, saveBtn;
 
     public LeftPaneDesign() {
@@ -18,6 +19,7 @@ public class LeftPaneDesign extends JPanel {
         selectionState.selection.put("room", 0);
         selectionState.selection.put("boundary", 0);
         selectionState.selection.put("fixture", 0);
+        Utils.Furniture_mapping();
         // setTitle("Floor Planner - Left Pane Design");
         // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 600);
@@ -219,15 +221,17 @@ public class LeftPaneDesign extends JPanel {
         });
 
         furnitureViewBtn.addActionListener(e -> {
-            selectionState.selection.put("view", 4);
-            selectionState.selection.put("room", 0);
-            selectionState.selection.put("boundary", 0);
-            selectionState.selection.put("fixture", 2);
+            actionPanel.setVisible(true);
             furnitureViewBtn.setEnabled(true);
             selectionViewBtn.setEnabled(true);
             boundaryViewBtn.setEnabled(true);
             roomViewBtn.setEnabled(true);
             furnitureViewBtn.setEnabled(false);
+            showFurnitureButtons();
+            selectionState.selection.put("view", 4);
+            selectionState.selection.put("room", 0);
+            selectionState.selection.put("boundary", 0);
+            selectionState.selection.put("fixture", 2);
         });
     }
 
@@ -351,6 +355,92 @@ public class LeftPaneDesign extends JPanel {
         
     }
 
+    private void showFurnitureButtons() {
+        actionPanel.removeAll();
+    
+        // Define buttons
+        bedBtn = new JButton("Bed");
+        chairBtn = new JButton("Chair");
+        commodeBtn = new JButton("Commode");
+        diningSetBtn = new JButton("Dining Set");
+        showerBtn = new JButton("Shower");
+        sofaBtn = new JButton("Sofa");
+        stoveBtn = new JButton("Stove");
+        tableBtn = new JButton("Table");
+        washbasinBtn = new JButton("Washbasin");
+    
+        // Add buttons to action panel
+        actionPanel.add(bedBtn);
+        actionPanel.add(chairBtn);
+        actionPanel.add(commodeBtn);
+        actionPanel.add(diningSetBtn);
+        actionPanel.add(showerBtn);
+        actionPanel.add(sofaBtn);
+        actionPanel.add(stoveBtn);
+        actionPanel.add(tableBtn);
+        actionPanel.add(washbasinBtn);
+    
+        // Add action listeners
+        bedBtn.addActionListener(e -> {
+            showFurnitureButtons();
+            updateFurnitureButton(bedBtn);
+            selectionState.selection.put("fixture", 1);
+        });
+    
+        chairBtn.addActionListener(e -> {
+            showFurnitureButtons();
+            updateFurnitureButton(chairBtn);
+            selectionState.selection.put("fixture", 11);
+        });
+    
+        commodeBtn.addActionListener(e -> {
+            showFurnitureButtons();
+            updateFurnitureButton(commodeBtn);
+            selectionState.selection.put("fixture", 21);
+        });
+    
+        diningSetBtn.addActionListener(e -> {
+            showFurnitureButtons();
+            updateFurnitureButton(diningSetBtn);
+            selectionState.selection.put("fixture", 31);
+        });
+    
+        showerBtn.addActionListener(e -> {
+            showFurnitureButtons();
+            updateFurnitureButton(showerBtn);
+            selectionState.selection.put("fixture", 41);
+        });
+    
+        sofaBtn.addActionListener(e -> {
+            showFurnitureButtons();
+            updateFurnitureButton(sofaBtn);
+            selectionState.selection.put("fixture", 61);
+        });
+    
+        stoveBtn.addActionListener(e -> {
+            showFurnitureButtons();
+            updateFurnitureButton(stoveBtn);
+            selectionState.selection.put("fixture", 71);
+        });
+    
+        tableBtn.addActionListener(e -> {
+            showFurnitureButtons();
+            updateFurnitureButton(tableBtn);
+            selectionState.selection.put("fixture", 81);
+        });
+    
+        washbasinBtn.addActionListener(e -> {
+            showFurnitureButtons();
+            updateFurnitureButton(washbasinBtn);
+            selectionState.selection.put("fixture", 91);
+        });
+    
+        // Redraw the panel
+        actionPanel.revalidate();
+        actionPanel.repaint();
+    }
+    
+
     private void updateRoomButton(JButton selectedButton){
         livingRoomBtn.setEnabled(true);
         kitchenBtn.setEnabled(true);
@@ -359,6 +449,20 @@ public class LeftPaneDesign extends JPanel {
         diningRoomBtn.setEnabled(true);
         selectedButton.setEnabled(false);
     }  
+
+    private void updateFurnitureButton(JButton selectedButton) {
+        bedBtn.setEnabled(true);
+        chairBtn.setEnabled(true);
+        commodeBtn.setEnabled(true);
+        diningSetBtn.setEnabled(true);
+        showerBtn.setEnabled(true);
+        sofaBtn.setEnabled(true);
+        stoveBtn.setEnabled(true);
+        tableBtn.setEnabled(true);
+        washbasinBtn.setEnabled(true);
+        selectedButton.setEnabled(false);
+    }
+    
 
     private void disableFocusPaintedForAllButtons(Container container) {
         for (Component component : container.getComponents()) {
