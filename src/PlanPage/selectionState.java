@@ -10,6 +10,7 @@ public class selectionState {
     public static Map<String, Integer> selection = new HashMap();
     public static Map<Integer, Color> colorMap = new HashMap();
     public static Room selectedRoom = null;
+    public static FObject selectedFObject = null;
     public static String filename = null; 
     public static Map<Integer, String> FObjectMap = new HashMap<>();
     public static boolean load;

@@ -124,18 +124,32 @@ class SnapGridPane extends JPanel {
                 Point snapPoint = snapToGrid(e.getPoint());
                 if (selectionState.selection.get("view") == 0){
                     boolean selected = false;
-                    for (Room room: rooms){
-                        if (e.getPoint().x>room.topLeft.x && e.getPoint().x<room.bottomRight.x 
-                        && e.getPoint().y>room.topLeft.y && e.getPoint().y<room.bottomRight.y){
-                            selectedRoom = room;
-                            selectionState.selectedRoom = selectedRoom;
-                            selected = true;
+                    for (FObject fobj: fobjects){
+                        if (e.getPoint().x>fobj.topLeft.x && e.getPoint().x<fobj.topLeft.x+30 
+                        && e.getPoint().y>fobj.topLeft.y && e.getPoint().y<fobj.topLeft.y+30){
+                            System.out.println("fobj found");
+                            selected=true;
+                            selectedFObj = fobj;
+                            selectionState.selectedFObject=selectedFObj;
+                            selectedRoom = null;
                             repaint();
-                            break;
+                        }
+                    }
+                    if (selectedFObj==null){
+                        for (Room room: rooms){
+                            if (e.getPoint().x>room.topLeft.x && e.getPoint().x<room.bottomRight.x 
+                            && e.getPoint().y>room.topLeft.y && e.getPoint().y<room.bottomRight.y){
+                                selectedRoom = room;
+                                selectionState.selectedRoom = selectedRoom;
+                                selected = true;
+                                repaint();
+                                break;
+                            }
                         }
                     }
                     if (selected==false){
                         selectedRoom = null;
+                        selectedFObj = null;
                     }
                     repaint();
                 }
@@ -462,6 +476,7 @@ class SnapGridPane extends JPanel {
         drawEndPointMarker(g);
         drawMovingRoom(g);
         drawMovingFObject(g);
+        drawSelectedFObject(g);
         drawCurrentPosition(g);
         drawDragPointMarker(g);
     }
@@ -606,7 +621,7 @@ class SnapGridPane extends JPanel {
     }
 
     private void drawSelectedRoom(Graphics g){
-        if ((selectedRoom==null || selectionState.selection.get("view")!=0) && selectedFObj!=null){
+        if ((selectedRoom==null || selectionState.selection.get("view")!=0)){
             return;
         }
         Color original = g.getColor();
@@ -628,19 +643,21 @@ class SnapGridPane extends JPanel {
     }
 
     private void drawSelectedFObject(Graphics g){
-        for (FObject f: fobjects){
-            try {
-                if (f==selectedFObj){
-                    g.drawImage(ImageIO.read(new File(f.fname)), f.topLeft.x, f.topLeft.y, Color.GREEN, null );
-                } else {
-                    g.drawImage(ImageIO.read(new File(f.fname)), f.topLeft.x, f.topLeft.y, null);
-                }
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            //System.out.println("drew "+f.im);
+        Color original = g.getColor();
+        if (selectedFObj==null){
+            return;
         }
+        try {
+            g.drawImage(ImageIO.read(new File(selectedFObj.fname)), selectedFObj.topLeft.x, selectedFObj.topLeft.y, null );
+            g.setColor(Color.GREEN);
+            int markerSize = 12;
+            g.fillOval(selectedFObj.topLeft.x - markerSize / 2, selectedFObj.topLeft.y - markerSize / 2, markerSize, markerSize);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        g.setColor(original);
+
     }
 
     private void drawMovingFObject(Graphics g){ 

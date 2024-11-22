@@ -12,7 +12,7 @@
 - [x] deletion of rooms
 - [x] addition of furniture
 - [ ] editing of furniture
-- [ ] deletion of furniture
+- [x] deletion of furniture
 
 ### Design Pane
 - [x] delete/rotate/save buttons at the bottom

@@ -137,6 +137,9 @@ public class LeftPaneDesign extends JPanel {
                     SnapGridPane.windows.remove(window);
                 }
                 selectionState.selectedRoom=null;
+            } else if (selectionState.selectedFObject!=null){
+                SnapGridPane.fobjects.remove(selectionState.selectedFObject);
+                selectionState.selectedFObject=null;
             }
         });
 
@@ -209,6 +212,7 @@ public class LeftPaneDesign extends JPanel {
         });
 
         selectionViewBtn.addActionListener(e -> {
+            System.out.println("clicked");
             selectionViewBtn.setEnabled(false);
             boundaryViewBtn.setEnabled(true);
             roomViewBtn.setEnabled(true);
@@ -221,12 +225,12 @@ public class LeftPaneDesign extends JPanel {
         });
 
         furnitureViewBtn.addActionListener(e -> {
+            System.out.println("clicked");
             actionPanel.setVisible(true);
-            furnitureViewBtn.setEnabled(true);
+            furnitureViewBtn.setEnabled(false);
             selectionViewBtn.setEnabled(true);
             boundaryViewBtn.setEnabled(true);
             roomViewBtn.setEnabled(true);
-            furnitureViewBtn.setEnabled(false);
             showFurnitureButtons();
             selectionState.selection.put("view", 4);
             selectionState.selection.put("room", 0);
@@ -278,7 +282,9 @@ public class LeftPaneDesign extends JPanel {
     }
 
     private void showRoomButtons() {
+        System.out.println("removing");
         actionPanel.removeAll();
+        System.out.println("removed");
         livingRoomBtn = new JButton("Living Room");
         kitchenBtn = new JButton("Kitchen");
         bathroomBtn = new JButton("Bathroom");
@@ -356,7 +362,9 @@ public class LeftPaneDesign extends JPanel {
     }
 
     private void showFurnitureButtons() {
+        System.out.println("removing");
         actionPanel.removeAll();
+        System.out.println("removed");
     
         // Define buttons
         bedBtn = new JButton("Bed");
