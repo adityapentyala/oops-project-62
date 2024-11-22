@@ -8,13 +8,13 @@ import java.util.ArrayList;
 public class LeftPaneDesign extends JPanel {
     // Main frame components
     private JPanel mainPanel, viewPanel, actionPanel, controlPanel, bottomPanel,logoPanel,topPanel;
-    private JButton boundaryViewBtn, roomViewBtn, selectionViewBtn;
+    private JButton boundaryViewBtn, roomViewBtn, selectionViewBtn, furnitureViewBtn;
     private JButton wallBtn, windowBtn, doorBtn;
     private JButton livingRoomBtn, kitchenBtn, bathroomBtn, bedroomBtn, diningRoomBtn;
     private JButton deleteBtn, rotateBtn, saveBtn;
 
     public LeftPaneDesign() {
-        selectionState.selection.put("view", 0);
+        selectionState.selection.put("view", 2);
         selectionState.selection.put("room", 0);
         selectionState.selection.put("boundary", 0);
         selectionState.selection.put("fixture", 0);
@@ -48,24 +48,28 @@ public class LeftPaneDesign extends JPanel {
         // Top View Panel for Boundary/Room toggle buttons
         viewPanel = new JPanel();
         viewPanel.setLayout(new GridLayout(1, 2, 5, 5));
-        boundaryViewBtn = new JButton("Boundary View");
-        roomViewBtn = new JButton("Room View");
-        selectionViewBtn = new JButton("Selection View");
+        roomViewBtn = new JButton("Rooms");
+        furnitureViewBtn = new JButton("Furniture");
+        boundaryViewBtn = new JButton("Fixtures");
+        selectionViewBtn = new JButton("Select");
 
         // Set initial state
-        boundaryViewBtn.setEnabled(true); // Default is Boundary View
-        roomViewBtn.setEnabled(true);
-        selectionViewBtn.setEnabled(false);
+        boundaryViewBtn.setEnabled(true); // Default is room View
+        roomViewBtn.setEnabled(false);
+        selectionViewBtn.setEnabled(true);
+        furnitureViewBtn.setEnabled(true);
 
         Insets buttonPadding = new Insets(15, 20, 15, 20); // Top, Left, Bottom, Right
         boundaryViewBtn.setMargin(buttonPadding);
         roomViewBtn.setMargin(buttonPadding);
         selectionViewBtn.setMargin(buttonPadding);
+        furnitureViewBtn.setMargin(buttonPadding);
 
         // Add toggle buttons
         viewPanel.add(boundaryViewBtn);
         viewPanel.add(roomViewBtn);
         viewPanel.add(selectionViewBtn);
+        viewPanel.add(furnitureViewBtn);
         viewPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
         topPanel.add(logoPanel, BorderLayout.NORTH);
@@ -75,7 +79,7 @@ public class LeftPaneDesign extends JPanel {
         actionPanel = new JPanel();
         actionPanel.setLayout(new GridLayout(5, 1, 5, 5)); // Placeholder for dynamic buttons
         //bottomPanel.setPreferredSize(new Dimension(300, 80));
-        showBoundaryButtons(); // Initially show Boundary View buttons
+        showRoomButtons(); // Initially show Room View buttons
 
 
         // Bottom Panel for Delete, Cancel, Save buttons
@@ -174,12 +178,14 @@ public class LeftPaneDesign extends JPanel {
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         add(mainPanel);
-
+        disableFocusPaintedForAllButtons(mainPanel);
         // Event Listeners
         boundaryViewBtn.addActionListener(e -> {
+            actionPanel.setVisible(true);
             boundaryViewBtn.setEnabled(false);
             roomViewBtn.setEnabled(true);
             selectionViewBtn.setEnabled(true);
+            furnitureViewBtn.setEnabled(true);
             showBoundaryButtons();
             selectionState.selection.put("view", 1);
             selectionState.selection.put("room", 0);
@@ -188,9 +194,11 @@ public class LeftPaneDesign extends JPanel {
         });
 
         roomViewBtn.addActionListener(e -> {
+            actionPanel.setVisible(true);
             roomViewBtn.setEnabled(false);
             boundaryViewBtn.setEnabled(true);
             selectionViewBtn.setEnabled(true);
+            furnitureViewBtn.setEnabled(true);
             showRoomButtons();
             selectionState.selection.put("view", 2);
             selectionState.selection.put("room", 4);
@@ -202,45 +210,57 @@ public class LeftPaneDesign extends JPanel {
             selectionViewBtn.setEnabled(false);
             boundaryViewBtn.setEnabled(true);
             roomViewBtn.setEnabled(true);
+            actionPanel.setVisible(false);
+            furnitureViewBtn.setEnabled(true);
             selectionState.selection.put("view", 0);
             selectionState.selection.put("room", 0);
             selectionState.selection.put("boundary", 0);
             selectionState.selection.put("fixture", 0);
         });
+
+        furnitureViewBtn.addActionListener(e -> {
+            furnitureViewBtn.setEnabled(true);
+            selectionViewBtn.setEnabled(true);
+            boundaryViewBtn.setEnabled(true);
+            roomViewBtn.setEnabled(true);
+            furnitureViewBtn.setEnabled(false);
+        });
     }
 
     private void showBoundaryButtons() {
         actionPanel.removeAll();
-        wallBtn = new JButton("Wall");
+        //wallBtn = new JButton("Wall");
         windowBtn = new JButton("Window");
         doorBtn = new JButton("Door");
 
-        actionPanel.add(wallBtn);
+        //actionPanel.add(wallBtn);
         actionPanel.add(windowBtn);
         actionPanel.add(doorBtn);
 
         // add listeners
-        wallBtn.addActionListener(e -> {
-            wallBtn.setEnabled(false);
-            windowBtn.setEnabled(true);
-            doorBtn.setEnabled(true);
-            showBoundaryButtons();
-            selectionState.selection.put("boundary", 1);
-        });
+        // wallBtn.addActionListener(e -> {
+        //     wallBtn.setEnabled(false);
+        //     windowBtn.setEnabled(true);
+        //     doorBtn.setEnabled(true);
+        //     showBoundaryButtons();
+        //     selectionState.selection.put("boundary", 1);
+        // });
 
         windowBtn.addActionListener(e -> {
-            wallBtn.setEnabled(true);
-            windowBtn.setEnabled(false);
-            doorBtn.setEnabled(true);
+            // wallBtn.setEnabled(true);
+            // windowBtn.setEnabled(false);
+            // doorBtn.setEnabled(true);
             showBoundaryButtons();
+            updateRoomButton(windowBtn);
             selectionState.selection.put("boundary", 3);
         });
 
         doorBtn.addActionListener(e -> {
-            wallBtn.setEnabled(true);
-            windowBtn.setEnabled(true);
-            doorBtn.setEnabled(false);
+            // wallBtn.setEnabled(true);
+            // windowBtn.setEnabled(true);
+            // doorBtn.setEnabled(false);
             showBoundaryButtons();
+            updateRoomButton(doorBtn);
             selectionState.selection.put("boundary", 2);
         });
 
@@ -265,60 +285,88 @@ public class LeftPaneDesign extends JPanel {
 
         // add action listeners
         livingRoomBtn.addActionListener(e -> {
-            livingRoomBtn.setEnabled(false);
-            kitchenBtn.setEnabled(true);
-            bathroomBtn.setEnabled(true);
-            bedroomBtn.setEnabled(true);
-            diningRoomBtn.setEnabled(true);
+            // livingRoomBtn.setEnabled(true);
+            // kitchenBtn.setEnabled(true);
+            // bathroomBtn.setEnabled(true);
+            // bedroomBtn.setEnabled(true);
+            // diningRoomBtn.setEnabled(true);
+            // livingRoomBtn.setEnabled(false);
             showRoomButtons();
+            updateRoomButton(livingRoomBtn);
             selectionState.selection.put("room", 8);
         });
 
         kitchenBtn.addActionListener(e -> {
-            livingRoomBtn.setEnabled(false);
-            kitchenBtn.setEnabled(true);
-            bathroomBtn.setEnabled(true);
-            bedroomBtn.setEnabled(true);
-            diningRoomBtn.setEnabled(true);
+            // livingRoomBtn.setEnabled(false);
+            // kitchenBtn.setEnabled(true);
+            // bathroomBtn.setEnabled(true);
+            // bedroomBtn.setEnabled(true);
+            // diningRoomBtn.setEnabled(true);
             showRoomButtons();
+            updateRoomButton(kitchenBtn);
             selectionState.selection.put("room", 4);
         });
 
         bathroomBtn.addActionListener(e -> {
-            livingRoomBtn.setEnabled(true);
-            kitchenBtn.setEnabled(true);
-            bathroomBtn.setEnabled(false);
-            bedroomBtn.setEnabled(true);
-            diningRoomBtn.setEnabled(true);
+            // livingRoomBtn.setEnabled(true);
+            // kitchenBtn.setEnabled(true);
+            // bathroomBtn.setEnabled(false);
+            // bedroomBtn.setEnabled(true);
+            // diningRoomBtn.setEnabled(true);
             showRoomButtons();
+            updateRoomButton(bathroomBtn);
             selectionState.selection.put("room", 6);
         });
 
         bedroomBtn.addActionListener(e -> {
-            livingRoomBtn.setEnabled(true);
-            kitchenBtn.setEnabled(true);
-            bathroomBtn.setEnabled(true);
-            bedroomBtn.setEnabled(false);
-            diningRoomBtn.setEnabled(true);
+            // livingRoomBtn.setEnabled(true);
+            // kitchenBtn.setEnabled(true);
+            // bathroomBtn.setEnabled(true);
+            // bedroomBtn.setEnabled(false);
+            // diningRoomBtn.setEnabled(true);
             showRoomButtons();
+            updateRoomButton(bedroomBtn);
             selectionState.selection.put("room", 5);
         });
 
         diningRoomBtn.addActionListener(e -> {
-            livingRoomBtn.setEnabled(true);
-            kitchenBtn.setEnabled(true);
-            bathroomBtn.setEnabled(true);
-            bedroomBtn.setEnabled(true);
-            diningRoomBtn.setEnabled(false);
+            // livingRoomBtn.setEnabled(true);
+            // kitchenBtn.setEnabled(true);
+            // bathroomBtn.setEnabled(true);
+            // bedroomBtn.setEnabled(true);
+            // diningRoomBtn.setEnabled(false);
             showRoomButtons();
+            updateRoomButton(diningRoomBtn);
             selectionState.selection.put("room", 7);
         });
 
         // Redraw panel
         actionPanel.revalidate();
         actionPanel.repaint();
+
+        
     }
 
+    private void updateRoomButton(JButton selectedButton){
+        livingRoomBtn.setEnabled(true);
+        kitchenBtn.setEnabled(true);
+        bathroomBtn.setEnabled(true);
+        bedroomBtn.setEnabled(true);
+        diningRoomBtn.setEnabled(true);
+        selectedButton.setEnabled(false);
+    }  
+
+    private void disableFocusPaintedForAllButtons(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JButton) {
+                ((JButton) component).setFocusPainted(false);
+            } else if (component instanceof Container) {
+                // Recursively check for buttons in nested containers
+                disableFocusPaintedForAllButtons((Container) component);
+            }
+        }
+    }
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             LeftPaneDesign frame = new LeftPaneDesign();
