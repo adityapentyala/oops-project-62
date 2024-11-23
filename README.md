@@ -1,5 +1,9 @@
 # OOPS Project Group 62 - AVA Floor Planner 2D
 
+![alt text](assets/image.png)
+
+![alt text](assets/image-1.png)
+
 ## TODO
 
 ### Planning Pane
@@ -11,7 +15,7 @@
 - [x] editing of rooms
 - [x] deletion of rooms
 - [x] addition of furniture
-- [ ] editing of furniture
+- [x] editing of furniture
 - [x] deletion of furniture
 
 ### Design Pane
