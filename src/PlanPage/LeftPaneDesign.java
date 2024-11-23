@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class LeftPaneDesign extends JPanel {
@@ -137,14 +138,31 @@ public class LeftPaneDesign extends JPanel {
                     SnapGridPane.windows.remove(window);
                 }
                 selectionState.selectedRoom=null;
+                selectionState.selectedFObject=null;
             } else if (selectionState.selectedFObject!=null){
                 SnapGridPane.fobjects.remove(selectionState.selectedFObject);
                 selectionState.selectedFObject=null;
+                selectionState.selectedRoom=null;
             }
         });
 
         rotateBtn.addActionListener(e -> {
-            if (selectionState.selectedRoom!=null){
+            if (selectionState.selectedFObject!=null){
+                try {
+                    FObject newobj = Utils.rotate_fixture(selectionState.selectedFObject);
+                    System.out.println(SnapGridPane.fobjects);
+                    SnapGridPane.fobjects.remove(selectionState.selectedFObject);
+                    System.out.println(SnapGridPane.fobjects);
+                    SnapGridPane.fobjects.add(newobj);
+                    System.out.println("rotated");
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                selectionState.selectedFObject = null;
+                selectionState.selectedRoom=null;
+            }
+            else if (selectionState.selectedRoom!=null){
                 System.out.println("Rotating");
                 for (Line line: selectionState.selectedRoom.walls) {
                     SnapGridPane.lines.remove(line);
@@ -168,6 +186,7 @@ public class LeftPaneDesign extends JPanel {
                         newRoom.walls = newWalls;
                 SnapGridPane.rooms.add(newRoom);
                 selectionState.selectedRoom=null;
+                selectionState.selectedFObject=null;
                 ArrayList<Line> toRemoveWindows = new ArrayList<>();
                         for (Line window: SnapGridPane.windows){
                             int wc = 0;
@@ -269,7 +288,7 @@ public class LeftPaneDesign extends JPanel {
             selectionState.selection.put("view", 4);
             selectionState.selection.put("room", 0);
             selectionState.selection.put("boundary", 0);
-            selectionState.selection.put("fixture", 2);
+            selectionState.selection.put("fixture", 1);
         });
     }
 
@@ -426,7 +445,7 @@ public class LeftPaneDesign extends JPanel {
         bedBtn.addActionListener(e -> {
             showFurnitureButtons();
             updateFurnitureButton(bedBtn);
-            selectionState.selection.put("fixture", 4);
+            selectionState.selection.put("fixture", 1);
         });
     
         chairBtn.addActionListener(e -> {
