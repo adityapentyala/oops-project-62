@@ -4,6 +4,7 @@
 
 ![alt text](assets/image-1.png)
 
+![alt text](assets/plan.png)
 ## TODO
 
 ### Planning Pane
