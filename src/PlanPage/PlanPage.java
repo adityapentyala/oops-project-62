@@ -102,8 +102,8 @@ class SnapGridPane extends JPanel {
         selectionState.colorMap.put(7, Color.ORANGE); // Dining area
         selectionState.colorMap.put(8, Color.YELLOW); // Drawing room
 
-        selectionState.FObjectMap.put(1, "assets/chair.png");
-        selectionState.FObjectMap.put(2, "assets/diningtable.png");
+        //selectionState.FObjectMap.put(1, "assets/chair.png");
+        //selectionState.FObjectMap.put(2, "assets/diningtable.png");
         //selectionState.selection.put("view", 4);
         selectionState.selection.put("fixture", 2);
 
@@ -712,7 +712,7 @@ class SnapGridPane extends JPanel {
         //Color original = g.getColor();
         for (FObject f: fobjects){
             try {
-                g.drawImage(ImageIO.read(new File(f.fname)), f.topLeft.x, f.topLeft.y, null);
+                g.drawImage(ImageIO.read(new File(f.fname)), f.topLeft.x+1, f.topLeft.y+1, null);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

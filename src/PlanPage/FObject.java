@@ -21,7 +21,8 @@ public class FObject implements Serializable {
         this.topLeft=tl;
         this.id = ID;
         //Toolkit t=Toolkit.getDefaultToolkit();  
-        fname = selectionState.FObjectMap.get(ID);  
+        fname = selectionState.FObjectMap.get(ID);
+        System.out.println(fname);  
         //this.im = ImageIO.read(new File(fname));
         //this.im = t.getImage(fname);
     }

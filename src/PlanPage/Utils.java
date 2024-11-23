@@ -1,6 +1,7 @@
 package src.PlanPage;
 import java.util.ArrayList;
 import java.awt.Point;
+import java.io.IOException;
 
 public class Utils {
     public static int overlap_checker(ArrayList<Room> rooms, Room new_room, boolean rotating) {
@@ -96,13 +97,14 @@ public class Utils {
   }
 
 public static void Furniture_mapping(){
-    selectionState.FObjectMap.put(01,"assets/Furniture/Bed/Bed_1.jpg");
-    selectionState.FObjectMap.put(02,"assets/Furniture/Bed/Bed_2.jpg");
-    selectionState.FObjectMap.put(03,"assets/Furniture/Bed/Bed_3.jpg");
-    selectionState.FObjectMap.put(04,"assets/Furniture/Bed/Bed_4.jpg");
+
+    selectionState.FObjectMap.put(1,"assets/Furniture/Bed/Bed_1.jpg");
+    selectionState.FObjectMap.put(2,"assets/Furniture/Bed/Bed_2.jpg");
+    selectionState.FObjectMap.put(3,"assets/Furniture/Bed/Bed_3.jpg");
+    selectionState.FObjectMap.put(4,"assets/Furniture/Bed/Bed_4.jpg");
 
     selectionState.FObjectMap.put(11,"assets/Furniture/Chiar/Chair_1.jpg");
-    selectionState.FObjectMap.put(12,"assets/Furniture/Chiar/Chair_2.jpg");
+    selectionState.FObjectMap.put(12,"assets/Furniture/Chair/Chair_2.jpg");
     selectionState.FObjectMap.put(13,"assets/Furniture/Chiar/Chair_3.jpg");
     selectionState.FObjectMap.put(14,"assets/Furniture/Chiar/Chair_4.jpg");
 
@@ -144,11 +146,20 @@ public static void Furniture_mapping(){
     selectionState.FObjectMap.put(91,"assets/Furniture/Washbasin/Washbasin_1.jpg");
     selectionState.FObjectMap.put(92,"assets/Furniture/Washbasin/Washbasin_2.jpg");
     selectionState.FObjectMap.put(93,"assets/Furniture/Washbasin/Washbasin_3.jpg");
-    selectionState.FObjectMap.put(94,"assets/Furniture/Washbasin/Washbasin_.jpg");
+    selectionState.FObjectMap.put(94,"assets/Furniture/Washbasin/Washbasin_4.jpg");
 }
 
-public static int rotate_fixture(selectionState fixture_state,FObject object){
+public static FObject rotate_fixture(FObject object) throws IOException {
+    FObject new_fixture; // Declare it outside the try-catch
+    int new_id = object.id;
+    if (object.id%10!=4){
+        new_id +=1;
+    } else if (object.id%10==4){
+        new_id-=3;
+    }
+    new_fixture = new FObject(object.topLeft, new_id);
 
-return 0;
+    return new_fixture; // Now it is accessible
 }
+
 }
