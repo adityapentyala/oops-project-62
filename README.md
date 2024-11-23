@@ -6,7 +6,7 @@
 - [x] add walls
 - [x] add windows
 - [x] add doors
-- [ ] boundary deletion dynamic
+- [x] boundary deletion dynamic
 - [x] addition of rooms
 - [x] editing of rooms
 - [x] deletion of rooms

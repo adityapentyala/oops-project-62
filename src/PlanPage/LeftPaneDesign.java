@@ -168,6 +168,40 @@ public class LeftPaneDesign extends JPanel {
                         newRoom.walls = newWalls;
                 SnapGridPane.rooms.add(newRoom);
                 selectionState.selectedRoom=null;
+                ArrayList<Line> toRemoveWindows = new ArrayList<>();
+                        for (Line window: SnapGridPane.windows){
+                            int wc = 0;
+                            for (Line wall: SnapGridPane.lines){
+                                if (SnapGridPane.onWall(wall, window.start, window.end)){
+                                    wc++;                                    
+                                }
+                            }
+                            if (wc>=2 || wc == 0){
+                                //System.out.println("Removing"+window)
+                                toRemoveWindows.add(window);
+                            }
+                        }
+                        ArrayList<Line> toRemoveDoors = new ArrayList<>();
+                        for (Line door: SnapGridPane.doors){
+                            int dc = 0;
+                            for (Line wall: SnapGridPane.lines){
+                                if (SnapGridPane.onWall(wall, door.start, door.end)){
+                                    dc++;
+                                }
+                            }
+                            if (dc < 1){
+                                System.out.println("Removing"+door+"with"+dc+"count");
+                                toRemoveDoors.add(door);
+                            }
+                        }
+                        for (Line window: toRemoveWindows){
+                            SnapGridPane.windows.remove(window);
+                        }
+                        for (Line door: toRemoveDoors){
+                            SnapGridPane.doors.remove(door);
+                        }
+                        toRemoveDoors = new ArrayList<>();
+                        toRemoveWindows = new ArrayList<>();
             }
         });
 

@@ -222,7 +222,7 @@ class SnapGridPane extends JPanel {
                                 }
                             }
                             if (isValid<1){
-                                System.out.println("Door cannot be placed outside in bed and bath rooms"+isValid);
+                                //System.out.println("Door cannot be placed outside in bed and bath rooms"+isValid);
                                 valid = false;
                             } else {
                                 valid=true;
@@ -230,7 +230,7 @@ class SnapGridPane extends JPanel {
                             for (Line window: windows){
                                 if (onWall(window, startPoint, snapPoint)){
                                     valid=false;
-                                    System.out.println("window door overlap");
+                                    //System.out.println("window door overlap");
                                     break;
                                 }
                             }
@@ -309,6 +309,40 @@ class SnapGridPane extends JPanel {
                         newWalls.add(l4);
                         movedRoom.walls = newWalls;
                         rooms.add(movedRoom);
+                        ArrayList<Line> toRemoveWindows = new ArrayList<>();
+                        for (Line window: windows){
+                            int wc = 0;
+                            for (Line wall: lines){
+                                if (onWall(wall, window.start, window.end)){
+                                    wc++;                                    
+                                }
+                            }
+                            if (wc>=2 || wc == 0){
+                                //System.out.println("Removing"+window)
+                                toRemoveWindows.add(window);
+                            }
+                        }
+                        ArrayList<Line> toRemoveDoors = new ArrayList<>();
+                        for (Line door: doors){
+                            int dc = 0;
+                            for (Line wall: lines){
+                                if (onWall(wall, door.start, door.end)){
+                                    dc++;
+                                }
+                            }
+                            if (dc < 1){
+                                System.out.println("Removing"+door+"with"+dc+"count");
+                                toRemoveDoors.add(door);
+                            }
+                        }
+                        for (Line window: toRemoveWindows){
+                            windows.remove(window);
+                        }
+                        for (Line door: toRemoveDoors){
+                            doors.remove(door);
+                        }
+                        toRemoveDoors = new ArrayList<>();
+                        toRemoveWindows = new ArrayList<>();
                     }
                     moving = false;
                     dist_x = 0;
