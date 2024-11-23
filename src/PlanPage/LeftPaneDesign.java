@@ -426,7 +426,7 @@ public class LeftPaneDesign extends JPanel {
         bedBtn.addActionListener(e -> {
             showFurnitureButtons();
             updateFurnitureButton(bedBtn);
-            selectionState.selection.put("fixture", 1);
+            selectionState.selection.put("fixture", 4);
         });
     
         chairBtn.addActionListener(e -> {

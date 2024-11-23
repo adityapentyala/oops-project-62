@@ -1,5 +1,7 @@
 package src.LandingPage;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -48,6 +50,7 @@ public class MainPage extends JFrame {
         newPlanButton.setIconTextGap(10);
         newPlanButton.setFocusPainted(false);
         newPlanButton.setFont(new Font("Arial", Font.PLAIN, 15));
+        newPlanButton.setBorder(new LineBorder(Color.BLACK, 1));
         buttonPanel.add(newPlanButton);
 
         // Load Plan Button
@@ -60,6 +63,7 @@ public class MainPage extends JFrame {
         loadPlanButton.setIconTextGap(10);
         loadPlanButton.setFocusPainted(false);
         loadPlanButton.setFont(new Font("Arial", Font.PLAIN, 15));
+        loadPlanButton.setBorder(new LineBorder(Color.BLACK, 1));
         buttonPanel.add(loadPlanButton);
 
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
